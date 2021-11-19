@@ -19,8 +19,7 @@ class ScreenSecond : Fragment(R.layout.screen_second) {
         super.onViewCreated(view, savedInstanceState)
         list = view.findViewById(R.id.list)
         listAdapter = ScreenSecondLA {
-            (requireParentFragment() as CustomBottomSheetDialogFragment)
-                .onGoToSecond()
+            sendNavigationMessage(CustomBottomSheetNavigationMessage.OpenScreenThird)
         }
         val lm = LinearLayoutManager(requireContext())
         list.layoutManager = lm

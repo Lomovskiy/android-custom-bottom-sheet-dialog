@@ -16,7 +16,7 @@ class ScreenFirst : Fragment(R.layout.screen_first), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-        (requireParentFragment() as CustomBottomSheetDialogFragment).onGoToThird()
+        sendNavigationMessage(CustomBottomSheetNavigationMessage.OpenScreenSecond)
     }
 
 }
