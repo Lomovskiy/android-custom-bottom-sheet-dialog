@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
 import java.util.*
 
-class ScreenSecond : Fragment(R.layout.screen_second) {
+class ScreenSecond(
+    private val coordinator: Coordinator
+) : Fragment(R.layout.screen_second) {
 
     private lateinit var list: RecyclerView
 
@@ -19,7 +22,7 @@ class ScreenSecond : Fragment(R.layout.screen_second) {
         super.onViewCreated(view, savedInstanceState)
         list = view.findViewById(R.id.list)
         listAdapter = ScreenSecondLA {
-            sendNavigationMessage(CustomBottomSheetNavigationMessage.OpenScreenThird)
+            coordinator.forward()
         }
         val lm = LinearLayoutManager(requireContext())
         list.layoutManager = lm

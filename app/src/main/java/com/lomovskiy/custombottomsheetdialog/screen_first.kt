@@ -3,9 +3,12 @@ package com.lomovskiy.custombottomsheetdialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 
-class ScreenFirst : Fragment(R.layout.screen_first), View.OnClickListener {
+class ScreenFirst(
+    private val coordinator: Coordinator
+) : Fragment(R.layout.screen_first), View.OnClickListener {
 
     private lateinit var buttonGoToNext: Button
 
@@ -16,7 +19,7 @@ class ScreenFirst : Fragment(R.layout.screen_first), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-        sendNavigationMessage(CustomBottomSheetNavigationMessage.OpenScreenSecond)
+        coordinator.forward()
     }
 
 }

@@ -5,48 +5,66 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class CustomBottomSheetDialogFragment : BottomSheetDialogFragment(),
-    NavigationRouter<CustomBottomSheetNavigationMessage> {
+class ScreenFactory(
+    private val coordinator: Coordinator
+) : FragmentFactory() {
+
+    override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+        when (className) {
+            ScreenFirst::class.java.name -> {
+                return ScreenFirst(coordinator)
+            }
+            ScreenSecond::class.java.name -> {
+                return ScreenSecond(coordinator)
+            }
+            ScreenThird::class.java.name -> {
+                return ScreenThird(coordinator)
+            }
+            else -> {
+                throw IllegalArgumentException()
+            }
+        }
+    }
+
+}
+
+class CustomBottomSheetDialogFragment : BottomSheetDialogFragment(), Navigator {
 
     private lateinit var dialog: BottomSheetDialog
 
-    override fun handleNavigationMessage(message: CustomBottomSheetNavigationMessage) {
-        when (message) {
-            CustomBottomSheetNavigationMessage.Back -> {
-                if (childFragmentManager.backStackEntryCount == 0) {
-                    dismiss()
-                    return
-                }
-                childFragmentManager.popBackStack()
+    private val coordinator: Coordinator = CoordinatorImpl(this)
+
+    override fun handleState(state: State) {
+        when (state) {
+            State.PAGE_ONE -> {
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.container, ScreenFirst::class.java, null)
+                    .commit()
             }
-            CustomBottomSheetNavigationMessage.OpenScreenFirst -> {
-                openScreen(
-                    containerViewId = R.id.container,
-                    screen = ScreenFirst::class.java,
-                    tag = ScreenFirst::class.java.simpleName,
-                    addToBackStack = true
-                )
+            State.PAGE_TWO -> {
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.container, ScreenSecond::class.java, null)
+                    .commit()
             }
-            CustomBottomSheetNavigationMessage.OpenScreenSecond -> {
-                openScreen(
-                    containerViewId = R.id.container,
-                    screen = ScreenSecond::class.java,
-                    tag = ScreenSecond::class.java.simpleName,
-                    addToBackStack = true
-                )
+            State.PAGE_THREE -> {
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.container, ScreenThird::class.java, null)
+                    .commit()
             }
-            CustomBottomSheetNavigationMessage.OpenScreenThird -> {
-                openScreen(
-                    containerViewId = R.id.container,
-                    screen = ScreenThird::class.java,
-                    tag = ScreenThird::class.java.simpleName,
-                    addToBackStack = true
-                )
+            State.CLOSED -> {
+                dismiss()
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        childFragmentManager.fragmentFactory = ScreenFactory(coordinator)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -61,7 +79,7 @@ class CustomBottomSheetDialogFragment : BottomSheetDialogFragment(),
         dialog = object : BottomSheetDialog(requireContext(), theme) {
 
             override fun onBackPressed() {
-                handleNavigationMessage(CustomBottomSheetNavigationMessage.Back)
+                coordinator.back()
             }
 
         }
@@ -70,12 +88,7 @@ class CustomBottomSheetDialogFragment : BottomSheetDialogFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        openScreen(
-            containerViewId = R.id.container,
-            screen = ScreenFirst::class.java,
-            tag = ScreenFirst::class.java.simpleName,
-            addToBackStack = false
-        )
+        coordinator.start()
     }
 
     companion object {
