@@ -10,7 +10,7 @@ class RootActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var buttonOpen: Button
     private lateinit var buttonClose: Button
 
-    private var customBottomSheetDialogFragment: CustomBottomSheetDialogFragment? = null
+    private var pagedBottomSheetDialogFragment: PagedBottomSheetDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,13 +19,13 @@ class RootActivity : AppCompatActivity(), View.OnClickListener {
         buttonClose = findViewById(R.id.button_close)
         buttonOpen.setOnClickListener(this)
         buttonClose.setOnClickListener(this)
-        customBottomSheetDialogFragment = CustomBottomSheetDialogFragment.newInstance()
+        pagedBottomSheetDialogFragment = PagedBottomSheetDialogFragment.newInstance()
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.button_open -> {
-                showDialog(CustomBottomSheetDialogFragment.TAG, customBottomSheetDialogFragment)
+                showDialog(PagedBottomSheetDialogFragment.TAG, pagedBottomSheetDialogFragment)
             }
             R.id.button_close -> {}
         }

@@ -1,59 +1,38 @@
 package com.lomovskiy.custombottomsheetdialog
 
 interface Coordinator {
-    fun start()
-    fun forward()
-    fun back()
-    fun finish()
+
+    fun handleCommand(command: Command)
+
+    sealed class Command {
+        object OpenFirstStep : Command()
+        object OpenSecondStep : Command()
+        class OpenThirdStep(val item: CharSequence) : Command()
+        object Finish : Command()
+    }
+
 }
 
 class CoordinatorImpl(
     private val navigator: Navigator
 ) : Coordinator {
 
-    private var state: State = State.PAGE_ONE
-
-    override fun start() {
-        state = State.PAGE_ONE
-        navigator.handleState(State.PAGE_ONE)
-    }
-
-    override fun forward() {
-        when (state) {
-            State.PAGE_ONE -> {
-                state = State.PAGE_TWO
-                navigator.handleState(state)
+    override fun handleCommand(command: Coordinator.Command) {
+        when (command) {
+            Coordinator.Command.Finish -> {
+                navigator.handleState(State.Finished)
             }
-            State.PAGE_TWO -> {
-                state = State.PAGE_THREE
-                navigator.handleState(state)
+            Coordinator.Command.OpenFirstStep -> {
+                navigator.handleState(State.StepOne)
             }
-            State.PAGE_THREE -> {}
-            State.CLOSED -> {}
+            Coordinator.Command.OpenSecondStep -> {
+                navigator.handleState(State.StepTwo)
+            }
+            is Coordinator.Command.OpenThirdStep -> {
+                navigator.handleState(State.StepThree(command.item))
+            }
         }
     }
 
-    override fun back() {
-        when (state) {
-            State.PAGE_ONE -> {
-                state = State.CLOSED
-                navigator.handleState(state)
-            }
-            State.PAGE_TWO -> {
-                state = State.PAGE_ONE
-                navigator.handleState(state)
-            }
-            State.PAGE_THREE -> {
-                state = State.PAGE_TWO
-                navigator.handleState(state)
-            }
-            State.CLOSED -> {}
-        }
-    }
-
-    override fun finish() {
-        state = State.CLOSED
-        navigator.handleState(state)
-    }
 
 }
