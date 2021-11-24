@@ -7,7 +7,7 @@ interface Coordinator {
     sealed class Command {
         object OpenFirstStep : Command()
         object OpenSecondStep : Command()
-        class OpenThirdStep(val item: CharSequence) : Command()
+        object OpenThirdStep : Command()
         object Finish : Command()
     }
 
@@ -29,7 +29,7 @@ class CoordinatorImpl(
                 navigator.handleState(State.StepTwo)
             }
             is Coordinator.Command.OpenThirdStep -> {
-                navigator.handleState(State.StepThree(command.item))
+                navigator.handleState(State.StepThree)
             }
         }
     }

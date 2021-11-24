@@ -7,7 +7,7 @@ sealed class State {
     object Finished : State()
     object StepOne : State()
     object StepTwo : State()
-    class StepThree(val item: CharSequence) : State()
+    object StepThree : State()
 }
 
 interface Navigator {
@@ -35,12 +35,7 @@ class NavigatorImpl(
             }
             is State.StepThree -> {
                 dialogFragment.childFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.container, ScreenThird::class.java,
-                        Bundle().apply {
-                            putCharSequence("string", state.item)
-                        }
-                    )
+                    .replace(R.id.container, ScreenThird::class.java, null)
                     .commit()
             }
         }

@@ -6,23 +6,26 @@ import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class ScreenFirst : Fragment(R.layout.screen_first), View.OnClickListener {
 
-    private val vm: ScreenFirstVM by viewModels(
-        factoryProducer = {
-            requireParentFragment() as ViewModelProvider.Factory
-        }
+    private val vm: PagedBottomSheetDialogFragmentVM by viewModels(
+        factoryProducer = { requireParentFragment() as ViewModelProvider.Factory },
+        ownerProducer = { requireParentFragment() }
     )
 
-    private lateinit var buttonGoToNext: Button
+    private lateinit var button1: Button
+    private lateinit var button2: Button
+    private lateinit var button3: Button
+    private lateinit var button4: Button
+    private lateinit var button5: Button
+    private lateinit var button6: Button
 
     private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
 
         override fun handleOnBackPressed() {
-            vm.handleAction(ScreenFirstVM.Action.OnBackPressed)
+            vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.Close)
         }
 
     }
@@ -30,36 +33,34 @@ class ScreenFirst : Fragment(R.layout.screen_first), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
-        buttonGoToNext = view.findViewById(R.id.button_go_to_next)
-        buttonGoToNext.setOnClickListener(this)
+        button1 = view.findViewById(R.id.button_1)
+        button2 = view.findViewById(R.id.button_2)
+        button3 = view.findViewById(R.id.button_3)
+        button4 = view.findViewById(R.id.button_4)
+        button5 = view.findViewById(R.id.button_5)
+        button6 = view.findViewById(R.id.button_6)
+        button1.setOnClickListener(this)
+        button2.setOnClickListener(this)
+        button3.setOnClickListener(this)
+        button4.setOnClickListener(this)
+        button5.setOnClickListener(this)
+        button6.setOnClickListener(this)
     }
 
-    override fun onClick(view: View) {
-        vm.handleAction(ScreenFirstVM.Action.OnButtonClicked(5))
+    override fun onClick(v: View) {
+        vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.OnNumberButtonPressed(getNumberById(v.id)))
     }
 
-}
-
-class ScreenFirstVM(
-    private val coordinator: Coordinator
-) : ViewModel() {
-
-    fun handleAction(action: Action) {
-        when (action) {
-            Action.OnBackPressed -> {
-                coordinator.handleCommand(Coordinator.Command.Finish)
-            }
-            is Action.OnButtonClicked -> {
-                when (action.number) {
-                    else -> coordinator.handleCommand(Coordinator.Command.OpenSecondStep)
-                }
-            }
+    private fun getNumberById(id: Int): Int {
+        return when (id) {
+            R.id.button_1 -> 1
+            R.id.button_2 -> 2
+            R.id.button_3 -> 3
+            R.id.button_4 -> 4
+            R.id.button_5 -> 5
+            R.id.button_6 -> 6
+            else -> throw IllegalStateException()
         }
-    }
-
-    sealed class Action {
-        object OnBackPressed : Action()
-        class OnButtonClicked(val number: Int) : Action()
     }
 
 }

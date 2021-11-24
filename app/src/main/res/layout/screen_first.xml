@@ -8,40 +8,45 @@
     >
 
     <Button
+        android:id="@+id/button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1"
         />
 
     <Button
+        android:id="@+id/button_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="2"
         />
 
     <Button
+        android:id="@+id/button_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="3"
         />
 
     <Button
+        android:id="@+id/button_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="4"
         />
 
     <Button
+        android:id="@+id/button_5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="5"
         />
 
     <Button
-        android:id="@+id/button_go_to_next"
+        android:id="@+id/button_6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="go to next"
+        android:text="6"
         />
 
 </LinearLayout>

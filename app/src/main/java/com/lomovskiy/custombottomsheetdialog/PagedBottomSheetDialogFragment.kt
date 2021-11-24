@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -34,8 +36,6 @@ class ScreenFactory : FragmentFactory() {
 }
 
 class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelProvider.Factory {
-
-    private lateinit var dialog: BottomSheetDialog
 
     private val navigator: Navigator = NavigatorImpl(this)
     private val coordinator: Coordinator = CoordinatorImpl(navigator)
@@ -80,19 +80,83 @@ class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelPro
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when (modelClass) {
-            ScreenFirstVM::class.java -> {
-                return ScreenFirstVM(coordinator) as T
-            }
-            ScreenSecondVM::class.java -> {
-                return ScreenSecondVM(coordinator) as T
-            }
-            ScreenThirdVM::class.java -> {
-                return ScreenThirdVM(coordinator) as T
+            PagedBottomSheetDialogFragmentVM::class.java -> {
+                return PagedBottomSheetDialogFragmentVM(coordinator) as T
             }
             else -> {
                 return modelClass.newInstance()
             }
         }
+    }
+
+    data class State(
+        val selectedString: CharSequence?,
+        val selectedNumber: Int?
+    ) {
+
+        companion object {
+
+            fun empty(): State {
+                return State(
+                    selectedString = null,
+                    selectedNumber = null
+                )
+            }
+
+        }
+
+    }
+
+}
+
+class PagedBottomSheetDialogFragmentVM(
+    private val coordinator: Coordinator
+) : ViewModel() {
+
+    private val state = MutableLiveData(PagedBottomSheetDialogFragment.State.empty())
+
+    fun getState(): LiveData<PagedBottomSheetDialogFragment.State> {
+        return state
+    }
+
+    fun setState(state: PagedBottomSheetDialogFragment.State) {
+        this.state.value = state
+    }
+
+    fun handleAction(action: Action) {
+        when (action) {
+            Action.Close -> {
+                coordinator.handleCommand(Coordinator.Command.Finish)
+            }
+            Action.OnListItemButtonPressed -> {
+                coordinator.handleCommand(Coordinator.Command.Finish)
+            }
+            is Action.OnListItemClicked -> {
+                state.value = state.value!!.copy(selectedString = action.string)
+                coordinator.handleCommand(Coordinator.Command.OpenThirdStep)
+            }
+            is Action.OnNumberButtonPressed -> {
+                state.value = state.value!!.copy(selectedNumber = action.number)
+                coordinator.handleCommand(Coordinator.Command.OpenSecondStep)
+            }
+            Action.OnBackToFirstStepPressed -> {
+                state.value = state.value!!.copy(selectedNumber = null)
+                coordinator.handleCommand(Coordinator.Command.OpenFirstStep)
+            }
+            Action.OnBackToSecondStepPressed -> {
+                state.value = state.value!!.copy(selectedString = null)
+                coordinator.handleCommand(Coordinator.Command.OpenSecondStep)
+            }
+        }
+    }
+
+    sealed class Action {
+        class OnNumberButtonPressed(val number: Int) : Action()
+        class OnListItemClicked(val string: CharSequence) : Action()
+        object OnListItemButtonPressed : Action()
+        object OnBackToFirstStepPressed : Action()
+        object OnBackToSecondStepPressed : Action()
+        object Close : Action()
     }
 
 }
