@@ -1,21 +1,14 @@
-package com.lomovskiy.custombottomsheetdialog
+package com.lomovskiy.pagedbsd.sample
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import java.util.*
 
 class PageSecond : PageBase(R.layout.page_second) {
-
-    private val vm: PagedBottomSheetDialogFragmentVM by viewModels(
-        factoryProducer = { requireParentFragment() as ViewModelProvider.Factory },
-        ownerProducer = { requireParentFragment() }
-    )
 
     private lateinit var list: RecyclerView
 

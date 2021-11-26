@@ -1,4 +1,4 @@
-package com.lomovskiy.custombottomsheetdialog
+package com.lomovskiy.pagedbsd.sample
 
 import android.os.Bundle
 import android.view.View
@@ -10,6 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 
 abstract class PageBase(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
+
+    protected val vm: PagedBottomSheetDialogFragmentVM by viewModels(
+        factoryProducer = { requireParentFragment() as ViewModelProvider.Factory },
+        ownerProducer = { requireParentFragment() }
+    )
 
     private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
 
@@ -29,11 +34,6 @@ abstract class PageBase(@LayoutRes contentLayoutId: Int) : Fragment(contentLayou
 }
 
 class PageFirst : PageBase(R.layout.page_first), View.OnClickListener {
-
-    private val vm: PagedBottomSheetDialogFragmentVM by viewModels(
-        factoryProducer = { requireParentFragment() as ViewModelProvider.Factory },
-        ownerProducer = { requireParentFragment() }
-    )
 
     private lateinit var button1: Button
     private lateinit var button2: Button
@@ -63,7 +63,13 @@ class PageFirst : PageBase(R.layout.page_first), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.OnNumberButtonPressed(getNumberById(v.id)))
+        vm.handleAction(
+            PagedBottomSheetDialogFragmentVM.Action.OnNumberButtonPressed(
+                getNumberById(
+                    v.id
+                )
+            )
+        )
     }
 
     private fun getNumberById(id: Int): Int {

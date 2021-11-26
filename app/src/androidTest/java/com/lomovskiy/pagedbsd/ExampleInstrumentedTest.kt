@@ -1,4 +1,4 @@
-package com.lomovskiy.custombottomsheetdialog
+package com.lomovskiy.pagedbsd
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.lomovskiy.custombottomsheetdialog
+package com.lomovskiy.pagedbsd.sample
 
 import android.app.Dialog
 import android.os.Bundle
@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.lang.IllegalStateException
 
 class ScreenFactory : FragmentFactory() {
 
@@ -38,12 +39,17 @@ class ScreenFactory : FragmentFactory() {
 
 class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelProvider.Factory {
 
-    private val navigator: Navigator = NavigatorImpl(this)
-    private val coordinator: Coordinator = CoordinatorImpl(navigator)
+    private val navigator: Navigator<SelectUUIDNavCommand> =
+        NavigatorImpl(this)
+
+    private val depsProvider: DepsProvider by lazy(LazyThreadSafetyMode.NONE) {
+        return@lazy getDepsProvider()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         childFragmentManager.fragmentFactory = ScreenFactory()
         super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -53,8 +59,6 @@ class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelPro
                 requireActivity().onBackPressed()
             }
 
-        }.apply {
-            setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
         }
     }
 
@@ -68,7 +72,7 @@ class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelPro
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        coordinator.handleCommand(Coordinator.Command.OpenFirstStep)
+        navigator.handleCommand(SelectUUIDNavCommand.OpenFirstStep)
     }
 
     companion object {
@@ -84,10 +88,14 @@ class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelPro
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when (modelClass) {
             PagedBottomSheetDialogFragmentVM::class.java -> {
-                return PagedBottomSheetDialogFragmentVM(coordinator) as T
+                return PagedBottomSheetDialogFragmentVM(
+                    navigator,
+                    depsProvider.provideDep1(),
+                    depsProvider.provideDep2()
+                ) as T
             }
             else -> {
-                return modelClass.newInstance()
+                throw IllegalStateException()
             }
         }
     }
@@ -115,7 +123,9 @@ class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelPro
 }
 
 class PagedBottomSheetDialogFragmentVM(
-    private val coordinator: Coordinator
+    private val navigator: Navigator<SelectUUIDNavCommand>,
+    private val deps1: String,
+    private val deps2: String
 ) : ViewModel() {
 
     private val state = MutableLiveData(PagedBottomSheetDialogFragment.State.empty())
@@ -131,26 +141,26 @@ class PagedBottomSheetDialogFragmentVM(
     fun handleAction(action: Action) {
         when (action) {
             Action.Close -> {
-                coordinator.handleCommand(Coordinator.Command.Finish)
+                navigator.handleCommand(SelectUUIDNavCommand.Finish)
             }
             Action.OnListItemButtonPressed -> {
-                coordinator.handleCommand(Coordinator.Command.Finish)
+                navigator.handleCommand(SelectUUIDNavCommand.Finish)
             }
             is Action.OnListItemClicked -> {
                 state.value = state.value!!.copy(selectedString = action.string)
-                coordinator.handleCommand(Coordinator.Command.OpenThirdStep)
+                navigator.handleCommand(SelectUUIDNavCommand.OpenThirdStep)
             }
             is Action.OnNumberButtonPressed -> {
                 state.value = state.value!!.copy(selectedNumber = action.number)
-                coordinator.handleCommand(Coordinator.Command.OpenSecondStep)
+                navigator.handleCommand(SelectUUIDNavCommand.OpenSecondStep)
             }
             Action.OnBackToFirstStepPressed -> {
                 state.value = state.value!!.copy(selectedNumber = null)
-                coordinator.handleCommand(Coordinator.Command.OpenFirstStep)
+                navigator.handleCommand(SelectUUIDNavCommand.OpenFirstStep)
             }
             Action.OnBackToSecondStepPressed -> {
                 state.value = state.value!!.copy(selectedString = null)
-                coordinator.handleCommand(Coordinator.Command.OpenSecondStep)
+                navigator.handleCommand(SelectUUIDNavCommand.OpenSecondStep)
             }
         }
     }

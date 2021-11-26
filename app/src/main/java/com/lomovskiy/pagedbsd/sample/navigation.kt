@@ -1,38 +1,38 @@
-package com.lomovskiy.custombottomsheetdialog
+package com.lomovskiy.pagedbsd.sample
 
 import androidx.fragment.app.DialogFragment
 
-sealed class State {
-    object Finished : State()
-    object StepOne : State()
-    object StepTwo : State()
-    object StepThree : State()
+sealed class SelectUUIDNavCommand {
+    object OpenFirstStep : SelectUUIDNavCommand()
+    object OpenSecondStep : SelectUUIDNavCommand()
+    object OpenThirdStep : SelectUUIDNavCommand()
+    object Finish : SelectUUIDNavCommand()
 }
 
-interface Navigator<> {
-    fun handleState(state: State)
+interface Navigator<T> {
+    fun handleCommand(command: T)
 }
 
 class NavigatorImpl(
     private val dialogFragment: DialogFragment
-) : Navigator {
+) : Navigator<SelectUUIDNavCommand> {
 
-    override fun handleState(state: State) {
-        when (state) {
-            State.Finished -> {
+    override fun handleCommand(command: SelectUUIDNavCommand) {
+        when (command) {
+            SelectUUIDNavCommand.Finish -> {
                 dialogFragment.dismissAllowingStateLoss()
             }
-            State.StepOne -> {
+            SelectUUIDNavCommand.OpenFirstStep -> {
                 dialogFragment.childFragmentManager.beginTransaction()
                     .replace(R.id.container, PageFirst::class.java, null)
                     .commit()
             }
-            State.StepTwo -> {
+            SelectUUIDNavCommand.OpenSecondStep -> {
                 dialogFragment.childFragmentManager.beginTransaction()
                     .replace(R.id.container, PageSecond::class.java, null)
                     .commit()
             }
-            is State.StepThree -> {
+            SelectUUIDNavCommand.OpenThirdStep -> {
                 dialogFragment.childFragmentManager.beginTransaction()
                     .replace(R.id.container, PageThird::class.java, null)
                     .commit()

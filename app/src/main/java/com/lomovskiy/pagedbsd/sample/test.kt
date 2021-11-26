@@ -1,4 +1,4 @@
-package com.lomovskiy.custombottomsheetdialog
+package com.lomovskiy.pagedbsd.sample
 
 interface Base {
     fun print()
