@@ -3,37 +3,9 @@ package com.lomovskiy.pagedbsd.sample
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.activity.OnBackPressedCallback
-import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import com.lomovskiy.pagedbsd.PagedBsdPage
 
-abstract class PageBase(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
-
-    protected val vm: PagedBottomSheetDialogFragmentVM by viewModels(
-        factoryProducer = { requireParentFragment() as ViewModelProvider.Factory },
-        ownerProducer = { requireParentFragment() }
-    )
-
-    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-
-        override fun handleOnBackPressed() {
-            onBackPressed()
-        }
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
-    }
-
-    abstract fun onBackPressed()
-
-}
-
-class PageFirst : PageBase(R.layout.page_first), View.OnClickListener {
+class PageFirst : PagedBsdPage<UuidsPagedBsdVM.Action>(R.layout.page_first), View.OnClickListener {
 
     private lateinit var button1: Button
     private lateinit var button2: Button
@@ -43,7 +15,7 @@ class PageFirst : PageBase(R.layout.page_first), View.OnClickListener {
     private lateinit var button6: Button
 
     override fun onBackPressed() {
-        vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.Close)
+        vm.handleAction(UuidsPagedBsdVM.Action.Close)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +36,7 @@ class PageFirst : PageBase(R.layout.page_first), View.OnClickListener {
 
     override fun onClick(v: View) {
         vm.handleAction(
-            PagedBottomSheetDialogFragmentVM.Action.OnNumberButtonPressed(
+            UuidsPagedBsdVM.Action.OnNumberButtonPressed(
                 getNumberById(
                     v.id
                 )

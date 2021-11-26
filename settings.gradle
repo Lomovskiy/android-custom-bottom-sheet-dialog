@@ -7,3 +7,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "paged-bsd"
 include ':sample'
+include ':lib'

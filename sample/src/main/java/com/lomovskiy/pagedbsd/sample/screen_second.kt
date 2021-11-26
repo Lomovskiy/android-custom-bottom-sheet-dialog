@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.*
+import com.lomovskiy.pagedbsd.PagedBsdPage
 import java.util.*
 
-class PageSecond : PageBase(R.layout.page_second) {
+class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action>(R.layout.page_second) {
 
     private lateinit var list: RecyclerView
 
@@ -23,7 +24,7 @@ class PageSecond : PageBase(R.layout.page_second) {
         })
         list = view.findViewById(R.id.list)
         listAdapter = PageSecondLA {
-            vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.OnListItemClicked(it))
+            vm.handleAction(UuidsPagedBsdVM.Action.OnListItemClicked(it))
         }
         val lm = LinearLayoutManager(requireContext())
         list.layoutManager = lm
@@ -32,7 +33,7 @@ class PageSecond : PageBase(R.layout.page_second) {
     }
 
     override fun onBackPressed() {
-        vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.OnBackToFirstStepPressed)
+        vm.handleAction(UuidsPagedBsdVM.Action.OnBackToFirstStepPressed)
     }
 
 
