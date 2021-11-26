@@ -1,6 +1,5 @@
 package com.lomovskiy.custombottomsheetdialog
 
-import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
 sealed class State {
@@ -10,7 +9,7 @@ sealed class State {
     object StepThree : State()
 }
 
-interface Navigator {
+interface Navigator<> {
     fun handleState(state: State)
 }
 
@@ -25,17 +24,17 @@ class NavigatorImpl(
             }
             State.StepOne -> {
                 dialogFragment.childFragmentManager.beginTransaction()
-                    .replace(R.id.container, ScreenFirst::class.java, null)
+                    .replace(R.id.container, PageFirst::class.java, null)
                     .commit()
             }
             State.StepTwo -> {
                 dialogFragment.childFragmentManager.beginTransaction()
-                    .replace(R.id.container, ScreenSecond::class.java, null)
+                    .replace(R.id.container, PageSecond::class.java, null)
                     .commit()
             }
             is State.StepThree -> {
                 dialogFragment.childFragmentManager.beginTransaction()
-                    .replace(R.id.container, ScreenThird::class.java, null)
+                    .replace(R.id.container, PageThird::class.java, null)
                     .commit()
             }
         }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.LiveData
@@ -18,14 +19,14 @@ class ScreenFactory : FragmentFactory() {
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         when (className) {
-            ScreenFirst::class.java.name -> {
-                return ScreenFirst()
+            PageFirst::class.java.name -> {
+                return PageFirst()
             }
-            ScreenSecond::class.java.name -> {
-                return ScreenSecond()
+            PageSecond::class.java.name -> {
+                return PageSecond()
             }
-            ScreenThird::class.java.name -> {
-                return ScreenThird()
+            PageThird::class.java.name -> {
+                return PageThird()
             }
             else -> {
                 throw IllegalArgumentException()
@@ -52,6 +53,8 @@ class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelPro
                 requireActivity().onBackPressed()
             }
 
+        }.apply {
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
         }
     }
 
@@ -106,6 +109,8 @@ class PagedBottomSheetDialogFragment : BottomSheetDialogFragment(), ViewModelPro
         }
 
     }
+
+
 
 }
 

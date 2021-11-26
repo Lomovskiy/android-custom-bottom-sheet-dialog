@@ -4,11 +4,31 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 
-class ScreenFirst : Fragment(R.layout.screen_first), View.OnClickListener {
+abstract class PageBase(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
+
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+    }
+
+    abstract fun onBackPressed()
+
+}
+
+class PageFirst : PageBase(R.layout.page_first), View.OnClickListener {
 
     private val vm: PagedBottomSheetDialogFragmentVM by viewModels(
         factoryProducer = { requireParentFragment() as ViewModelProvider.Factory },
@@ -22,17 +42,12 @@ class ScreenFirst : Fragment(R.layout.screen_first), View.OnClickListener {
     private lateinit var button5: Button
     private lateinit var button6: Button
 
-    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-
-        override fun handleOnBackPressed() {
-            vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.Close)
-        }
-
+    override fun onBackPressed() {
+        vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.Close)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
         button1 = view.findViewById(R.id.button_1)
         button2 = view.findViewById(R.id.button_2)
         button3 = view.findViewById(R.id.button_3)

@@ -5,42 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import java.util.*
 
-class ScreenSecond : Fragment(R.layout.screen_second) {
+class PageSecond : PageBase(R.layout.page_second) {
 
     private val vm: PagedBottomSheetDialogFragmentVM by viewModels(
         factoryProducer = { requireParentFragment() as ViewModelProvider.Factory },
         ownerProducer = { requireParentFragment() }
     )
 
-    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-
-        override fun handleOnBackPressed() {
-            vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.OnBackToFirstStepPressed)
-        }
-
-    }
-
     private lateinit var list: RecyclerView
 
-    private var listAdapter: ScreenSecondLA? = null
+    private var listAdapter: PageSecondLA? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
         vm.getState().observe(viewLifecycleOwner, {
             listAdapter?.submitList(List(it.selectedNumber ?: 0) {
                 UUID.randomUUID().toString()
             })
         })
         list = view.findViewById(R.id.list)
-        listAdapter = ScreenSecondLA {
+        listAdapter = PageSecondLA {
             vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.OnListItemClicked(it))
         }
         val lm = LinearLayoutManager(requireContext())
@@ -49,28 +38,32 @@ class ScreenSecond : Fragment(R.layout.screen_second) {
         list.adapter = listAdapter
     }
 
+    override fun onBackPressed() {
+        vm.handleAction(PagedBottomSheetDialogFragmentVM.Action.OnBackToFirstStepPressed)
+    }
+
 
 }
 
-class ScreenSecondLA(
+class PageSecondLA(
     private val onClickListener: (item: CharSequence) -> Unit
-) : ListAdapter<CharSequence, ScreenSecondLAVH>(ScreenSecondItemCallback()) {
+) : ListAdapter<CharSequence, PageSecondLAVH>(PageSecondItemCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScreenSecondLAVH {
-        return ScreenSecondLAVH(
-            LayoutInflater.from(parent.context).inflate(R.layout.screen_second_list_item, parent, false),
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PageSecondLAVH {
+        return PageSecondLAVH(
+            LayoutInflater.from(parent.context).inflate(R.layout.page_second_list_item, parent, false),
             onClickListener
         )
     }
 
-    override fun onBindViewHolder(holder: ScreenSecondLAVH, position: Int) {
+    override fun onBindViewHolder(holder: PageSecondLAVH, position: Int) {
         holder.bind(currentList[position])
     }
 
 
 }
 
-class ScreenSecondLAVH(
+class PageSecondLAVH(
     itemView: View,
     private val onClickListener: (item: CharSequence) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
@@ -86,7 +79,7 @@ class ScreenSecondLAVH(
 
 }
 
-class ScreenSecondItemCallback : DiffUtil.ItemCallback<CharSequence>() {
+class PageSecondItemCallback : DiffUtil.ItemCallback<CharSequence>() {
 
     override fun areItemsTheSame(oldItem: CharSequence, newItem: CharSequence): Boolean {
         return oldItem == newItem
