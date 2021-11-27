@@ -3,16 +3,12 @@ package com.lomovskiy.pagedbsd.sample.pages.first
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.fragment.app.Fragment
-import com.lomovskiy.pagedbsd.PagedBsdPage
 import com.lomovskiy.pagedbsd.sample.R
+import com.lomovskiy.pagedbsd.sample.UuidPagedBsd
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
+import com.lomovskiy.pagedbsd.sample.pages.PageBase
 
-class PageFirst : PagedBsdPage<UuidsPagedBsdViewModel, UuidsPagedBsdViewModel.State, UuidsPagedBsdViewModel.Action>(R.layout.page_first),
-    View.OnClickListener {
-
-    override val key: String = PageFirst::class.java.simpleName
-    override val clazz: Class<out Fragment> = PageFirst::class.java
+class PageFirst : PageBase(R.layout.page_first), View.OnClickListener {
 
     private lateinit var button1: Button
     private lateinit var button2: Button
@@ -42,14 +38,10 @@ class PageFirst : PagedBsdPage<UuidsPagedBsdViewModel, UuidsPagedBsdViewModel.St
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(
-            UuidsPagedBsdViewModel.Action.OnNumberButtonPressed(
-                getNumberById(
-                    v.id
-                )
-            )
-        )
+        vm.handleAction(UuidsPagedBsdViewModel.Action.PressedButtonNumber(getNumberById(v.id)))
     }
+
+    override fun renderState(state: UuidPagedBsd.State) {}
 
     private fun getNumberById(id: Int): Int {
         return when (id) {

@@ -46,4 +46,9 @@ class UuidPagedBsd : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.fragment_paged_bottom_sheet, container, false)
     }
 
+    data class State(
+        val selectedPosition: Int?,
+        val selectedUuid: CharSequence?
+    )
+
 }

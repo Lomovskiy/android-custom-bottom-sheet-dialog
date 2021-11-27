@@ -2,52 +2,48 @@ package com.lomovskiy.pagedbsd.sample
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lomovskiy.pagedbsd.PagedBsdViewModel
-import com.lomovskiy.pagedbsd.navigation.PagedBsdCoordinator
+import androidx.lifecycle.ViewModel
+import com.lomovskiy.pagedbsd.navigation.Coordinator
 
 class UuidsPagedBsdViewModel(
-    private val coordinator: PagedBsdCoordinator
-) : PagedBsdViewModel() {
+    private val coordinator: Coordinator
+) : ViewModel() {
 
-    private val state = MutableLiveData(State.empty())
+    private val state = MutableLiveData(UuidPagedBsd.State(null, null))
 
-    override fun handleAction(action: PagedBsdViewModel.Action) {
+    fun handleAction(action: Action) {
         when (action) {
             Action.Close -> {
                 coordinator.finish()
             }
-            Action.OnListItemButtonPressed -> {
-                coordinator.finish()
-            }
-            is Action.OnListItemClicked -> {
-                state.value = state.value!!.copy(selectedUuid = action.string)
+            is Action.SelectedListItem -> {
+                state.value = state.value!!.copy(selectedUuid = action.item)
                 coordinator.replaceOn(Pages.PageThird)
             }
-            is Action.OnNumberButtonPressed -> {
+            is Action.PressedButtonNumber -> {
                 state.value = state.value!!.copy(selectedPosition = action.number)
                 coordinator.replaceOn(Pages.PageSecond)
             }
-            Action.OnBackToFirstStepPressed -> {
+            Action.PressedButtonBackToFirst -> {
                 state.value = state.value!!.copy(selectedPosition = null)
                 coordinator.backTo(Pages.PageFirst)
             }
-            Action.OnBackToSecondStepPressed -> {
+            Action.PressedButtonBackToSecond -> {
                 state.value = state.value!!.copy(selectedPosition = null)
                 coordinator.backTo(Pages.PageSecond)
             }
         }
     }
 
-    override fun getStateStream(): LiveData<State> {
+    fun getStateStream(): LiveData<UuidPagedBsd.State> {
         return state
     }
 
-    sealed class Action : PagedBsdViewModel.Action {
-        class OnNumberButtonPressed(val number: Int) : Action()
-        class OnListItemClicked(val string: CharSequence) : Action()
-        object OnListItemButtonPressed : Action()
-        object OnBackToFirstStepPressed : Action()
-        object OnBackToSecondStepPressed : Action()
+    sealed class Action {
+        class PressedButtonNumber(val number: Int) : Action()
+        class SelectedListItem(val item: CharSequence) : Action()
+        object PressedButtonBackToFirst : Action()
+        object PressedButtonBackToSecond : Action()
         object Close : Action()
     }
 

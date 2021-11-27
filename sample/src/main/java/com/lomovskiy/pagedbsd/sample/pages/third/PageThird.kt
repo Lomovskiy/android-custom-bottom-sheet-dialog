@@ -3,34 +3,32 @@ package com.lomovskiy.pagedbsd.sample.pages.third
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.fragment.app.Fragment
-import com.lomovskiy.pagedbsd.PagedBsdPage
 import com.lomovskiy.pagedbsd.sample.R
+import com.lomovskiy.pagedbsd.sample.UuidPagedBsd
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
+import com.lomovskiy.pagedbsd.sample.pages.PageBase
 
-class PageThird : PagedBsdPage<UuidsPagedBsdViewModel, UuidsPagedBsdViewModel.State, UuidsPagedBsdViewModel.Action>(R.layout.page_third),
+class PageThird : PageBase(R.layout.page_third),
     View.OnClickListener {
-
-    override val key: String = PageThird::class.java.simpleName
-    override val clazz: Class<out Fragment> = PageThird::class.java
 
     private lateinit var buttonStub: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.getStateStream().observe(viewLifecycleOwner, {
-            buttonStub.text = it.selectedUuid
-        })
         buttonStub = view.findViewById(R.id.button_stub)
         buttonStub.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(UuidsPagedBsdViewModel.Action.OnListItemButtonPressed)
+        vm.handleAction(UuidsPagedBsdViewModel.Action.Close)
     }
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBsdViewModel.Action.OnBackToSecondStepPressed)
+        vm.handleAction(UuidsPagedBsdViewModel.Action.PressedButtonBackToSecond)
+    }
+
+    override fun renderState(state: UuidPagedBsd.State) {
+        buttonStub.text = state.selectedUuid
     }
 
 }

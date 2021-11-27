@@ -1,21 +1,24 @@
-package com.lomovskiy.pagedbsd
+package com.lomovskiy.pagedbsd.sample.pages
 
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.lomovskiy.pagedbsd.navigation.Page
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
+import com.lomovskiy.pagedbsd.sample.UuidPagedBsd
+import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
 
-abstract class PagedBsdPage<VM, S, A>(
+abstract class PageBase(
     @LayoutRes contentLayoutId: Int
-) : Fragment(contentLayoutId), Page
-        where
-              VM : PagedBsdViewModel<S, A>,
-              A : PagedBsdViewModelAction {
+) : Fragment(contentLayoutId) {
 
-    protected val vm: PagedBsdViewModel<S, A> = findPagedBsdViewModelProvider<VM>()
-        .providePagedBsdViewModel()
+    protected val vm: UuidsPagedBsdViewModel by viewModels(
+        ownerProducer = { parentFragment as ViewModelStoreOwner },
+        factoryProducer = { parentFragment as ViewModelProvider.Factory }
+    )
 
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
@@ -29,8 +32,11 @@ abstract class PagedBsdPage<VM, S, A>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        vm.getStateStream().observe(viewLifecycleOwner, ::renderState)
     }
 
     abstract fun onBackPressed()
+
+    abstract fun renderState(state: UuidPagedBsd.State)
 
 }
