@@ -1,9 +1,11 @@
-package com.lomovskiy.pagedbsd.sample
+package com.lomovskiy.pagedbsd.sample.pages.first
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import com.lomovskiy.pagedbsd.PagedBsdPage
+import com.lomovskiy.pagedbsd.sample.R
+import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
 
 class PageFirst : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_first),
     View.OnClickListener {

@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.viewModels
-import com.lomovskiy.pagedbsd.PagedBsd
 
 class RootActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,12 +30,5 @@ class RootActivity : AppCompatActivity(), View.OnClickListener {
             R.id.button_close -> {}
         }
     }
-
-}
-
-class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>() {
-
-    override val viewModel: UuidsPagedBsdVM by viewModels()
-    override val pageFactory: FragmentFactory = PageFactory()
 
 }

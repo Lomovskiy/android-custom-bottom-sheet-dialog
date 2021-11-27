@@ -1,6 +1,9 @@
 package com.lomovskiy.pagedbsd.sample
 
 import androidx.fragment.app.DialogFragment
+import com.lomovskiy.pagedbsd.sample.pages.first.PageFirst
+import com.lomovskiy.pagedbsd.sample.pages.second.PageSecond
+import com.lomovskiy.pagedbsd.sample.pages.third.PageThird
 
 sealed class SelectUUIDNavCommand {
     object OpenFirstStep : SelectUUIDNavCommand()

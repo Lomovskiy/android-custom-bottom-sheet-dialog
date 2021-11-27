@@ -2,6 +2,9 @@ package com.lomovskiy.pagedbsd.sample
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import com.lomovskiy.pagedbsd.sample.pages.first.PageFirst
+import com.lomovskiy.pagedbsd.sample.pages.second.PageSecond
+import com.lomovskiy.pagedbsd.sample.pages.third.PageThird
 
 class PageFactory : FragmentFactory() {
 
