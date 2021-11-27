@@ -14,22 +14,19 @@ open class PagedBsdCoordinator(
 ) : Coordinator {
 
     override fun navigateTo(page: Page) {
-        navigator.executeCommands(arrayOf(PagedBsdNavigationCommand.ForwardTo(page)))
+        navigator.executeCommand(ForwardTo(page))
     }
 
     override fun replaceOn(page: Page) {
-        navigator.executeCommands(arrayOf(PagedBsdNavigationCommand.ReplaceOn(page)))
+        navigator.executeCommand(ReplaceOn(page))
     }
 
     override fun backTo(page: Page) {
-        navigator.executeCommands(arrayOf(PagedBsdNavigationCommand.BackTo(page)))
+        navigator.executeCommand(BackTo(page))
     }
 
     override fun finish() {
-        navigator.executeCommands(arrayOf(
-            PagedBsdNavigationCommand.BackTo(null),
-            PagedBsdNavigationCommand.Back
-        ))
+        navigator.executeCommands(arrayOf(BackTo(null), Back))
     }
 
 }

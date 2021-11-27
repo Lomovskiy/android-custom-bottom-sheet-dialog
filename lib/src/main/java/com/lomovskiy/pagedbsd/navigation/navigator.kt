@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentTransaction
 
 interface Navigator {
 
-    fun executeCommands(commands: Array<out PagedBsdNavigationCommand>)
+    fun executeCommand(command: NavigationCommand)
+
+    fun executeCommands(commands: Array<out NavigationCommand>)
 
 }
 
@@ -21,7 +23,22 @@ open class PagedBsdNavigator(
 
     private var fragmentManagerStackCopy = ArrayList<String>()
 
-    override fun executeCommands(commands: Array<out PagedBsdNavigationCommand>) {
+    override fun executeCommand(command: NavigationCommand) {
+        childFragmentManager.executePendingTransactions()
+        fragmentManagerStackCopy = ArrayList()
+        for (i in 0 until childFragmentManager.backStackEntryCount) {
+            fragmentManagerStackCopy.add(childFragmentManager.getBackStackEntryAt(i).name!!)
+        }
+        when (command) {
+            Back -> handleBack()
+            is BackTo -> handleBackTo(command.page)
+            is ForwardTo -> handleForwardTo(command.page)
+            is ReplaceOn -> handleReplaceOn(command.page)
+            else -> {}
+        }
+    }
+
+    override fun executeCommands(commands: Array<out NavigationCommand>) {
         childFragmentManager.executePendingTransactions()
         fragmentManagerStackCopy = ArrayList()
         for (i in 0 until childFragmentManager.backStackEntryCount) {
@@ -29,10 +46,11 @@ open class PagedBsdNavigator(
         }
         commands.forEach {
             when (it) {
-                PagedBsdNavigationCommand.Back -> handleBack()
-                is PagedBsdNavigationCommand.BackTo -> handleBackTo(it.page)
-                is PagedBsdNavigationCommand.ForwardTo -> handleForwardTo(it.page)
-                is PagedBsdNavigationCommand.ReplaceOn -> handleReplaceOn(it.page)
+                Back -> handleBack()
+                is BackTo -> handleBackTo(it.page)
+                is ForwardTo -> handleForwardTo(it.page)
+                is ReplaceOn -> handleReplaceOn(it.page)
+                else -> {}
             }
         }
     }
