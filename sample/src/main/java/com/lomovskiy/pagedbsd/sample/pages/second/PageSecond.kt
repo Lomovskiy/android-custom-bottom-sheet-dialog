@@ -1,17 +1,20 @@
 package com.lomovskiy.pagedbsd.sample.pages.second
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.*
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lomovskiy.pagedbsd.PagedBsdPage
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
 import java.util.*
 
 class PageSecond : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_second) {
+
+    override val key: String = PageSecond::class.java.simpleName
+    override val clazz: Class<out Fragment> = PageSecond::class.java
 
     private lateinit var list: RecyclerView
 

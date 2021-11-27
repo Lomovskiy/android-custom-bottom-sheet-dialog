@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.lomovskiy.pagedbsd.navigation.PagedBsdNavigator
 
 abstract class PagedBsd<VM, S, A> : BottomSheetDialogFragment(),
     PagedBsdViewModelProvider<VM>
@@ -18,6 +19,8 @@ abstract class PagedBsd<VM, S, A> : BottomSheetDialogFragment(),
 
     protected abstract val viewModel: VM
     protected abstract val pageFactory: FragmentFactory
+
+    protected val navigator: PagedBsdNavigator = PagedBsdNavigator(this, R.id.container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         childFragmentManager.fragmentFactory = pageFactory

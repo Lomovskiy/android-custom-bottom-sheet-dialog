@@ -5,10 +5,11 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.lomovskiy.pagedbsd.navigation.Page
 
 abstract class PagedBsdPage<VM, S, A>(
     @LayoutRes contentLayoutId: Int
-) : Fragment(contentLayoutId)
+) : Fragment(contentLayoutId), Page
         where S : PagedBsdState,
               VM : PagedBsdViewModel<S, A>,
               A : PagedBsdViewModelAction {

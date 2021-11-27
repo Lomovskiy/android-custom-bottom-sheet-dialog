@@ -3,12 +3,16 @@ package com.lomovskiy.pagedbsd.sample.pages.first
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import com.lomovskiy.pagedbsd.PagedBsdPage
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
 
 class PageFirst : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_first),
     View.OnClickListener {
+
+    override val key: String = PageFirst::class.java.simpleName
+    override val clazz: Class<out Fragment> = PageFirst::class.java
 
     private lateinit var button1: Button
     private lateinit var button2: Button

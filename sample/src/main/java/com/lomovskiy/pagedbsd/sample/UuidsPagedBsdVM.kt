@@ -5,36 +5,37 @@ import androidx.lifecycle.MutableLiveData
 import com.lomovskiy.pagedbsd.PagedBsdState
 import com.lomovskiy.pagedbsd.PagedBsdViewModel
 import com.lomovskiy.pagedbsd.PagedBsdViewModelAction
+import com.lomovskiy.pagedbsd.navigation.PagedBsdCoordinator
 
 class UuidsPagedBsdVM(
-    private val navigator: Navigator<SelectUUIDNavCommand>
-) : PagedBsdViewModel<UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>() {
+    private val coordinator: PagedBsdCoordinator
+) : PagedBsdViewModel<UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(coordinator) {
 
     private val state = MutableLiveData(State.empty())
 
     override fun handleAction(action: Action) {
         when (action) {
             Action.Close -> {
-                navigator.handleCommand(SelectUUIDNavCommand.Finish)
+                coordinator.finish()
             }
             Action.OnListItemButtonPressed -> {
-                navigator.handleCommand(SelectUUIDNavCommand.Finish)
+                coordinator.finish()
             }
             is Action.OnListItemClicked -> {
                 state.value = state.value!!.copy(selectedUuid = action.string)
-                navigator.handleCommand(SelectUUIDNavCommand.OpenThirdStep)
+                coordinator.replaceOn(Pages.PageThird)
             }
             is Action.OnNumberButtonPressed -> {
                 state.value = state.value!!.copy(selectedPosition = action.number)
-                navigator.handleCommand(SelectUUIDNavCommand.OpenSecondStep)
+                coordinator.replaceOn(Pages.PageSecond)
             }
             Action.OnBackToFirstStepPressed -> {
                 state.value = state.value!!.copy(selectedPosition = null)
-                navigator.handleCommand(SelectUUIDNavCommand.OpenFirstStep)
+                coordinator.backTo(Pages.PageFirst)
             }
             Action.OnBackToSecondStepPressed -> {
                 state.value = state.value!!.copy(selectedPosition = null)
-                navigator.handleCommand(SelectUUIDNavCommand.OpenSecondStep)
+                coordinator.backTo(Pages.PageSecond)
             }
         }
     }
