@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.*
 import com.lomovskiy.pagedbsd.PagedBsdPage
 import java.util.*
 
-class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action>(R.layout.page_second) {
+class PageSecond : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_second) {
 
     private lateinit var list: RecyclerView
 
@@ -17,8 +17,8 @@ class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action>(R.layout.page_second) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.getState().observe(viewLifecycleOwner, {
-            listAdapter?.submitList(List(it.selectedNumber ?: 0) {
+        vm.getStateStream().observe(viewLifecycleOwner, {
+            listAdapter?.submitList(List(it.selectedPosition ?: 0) {
                 UUID.randomUUID().toString()
             })
         })

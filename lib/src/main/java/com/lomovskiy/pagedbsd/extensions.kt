@@ -1,36 +1,18 @@
 package com.lomovskiy.pagedbsd
 
-
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 
-internal fun Fragment.findViewModelProvider(): ViewModelProvider.Factory {
+internal fun <VM> Fragment.findPagedBsdViewModelProvider(): PagedBsdViewModelProvider<VM> {
     if (parentFragment != null) {
-        if (parentFragment is ViewModelProvider.Factory) {
-            return parentFragment as ViewModelProvider.Factory
+        if (parentFragment is PagedBsdViewModelProvider<*>) {
+            return parentFragment as PagedBsdViewModelProvider<VM>
         }
-        return parentFragment!!.findViewModelProvider()
+        return parentFragment!!.findPagedBsdViewModelProvider()
     } else {
-        if (activity is ViewModelProvider.Factory) {
-            return activity as ViewModelProvider.Factory
+        if (activity is PagedBsdViewModelProvider<*>) {
+            return activity as PagedBsdViewModelProvider<VM>
         } else {
-            throw IllegalStateException("Couldn't find viewModel provider")
-        }
-    }
-}
-
-internal inline fun Fragment.findViewModelStore(): ViewModelStoreOwner {
-    if (parentFragment != null) {
-        if (parentFragment is ViewModelStoreOwner) {
-            return parentFragment as ViewModelProvider.Factory
-        }
-        return parentFragment!!.findViewModelProvider()
-    } else {
-        if (activity is ViewModelProvider.Factory) {
-            return activity as ViewModelProvider.Factory
-        } else {
-            throw IllegalStateException("Couldn't find viewModel provider")
+            throw IllegalStateException("Couldn't find view model provider")
         }
     }
 }

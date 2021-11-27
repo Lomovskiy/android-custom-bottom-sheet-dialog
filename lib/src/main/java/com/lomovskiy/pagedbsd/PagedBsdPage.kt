@@ -5,16 +5,16 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 
-abstract class PagedBsdPage<A>(
+abstract class PagedBsdPage<VM, S, A>(
     @LayoutRes contentLayoutId: Int
-) : Fragment(contentLayoutId) {
+) : Fragment(contentLayoutId)
+        where S : PagedBsdState,
+              VM : PagedBsdViewModel<S, A>,
+              A : PagedBsdViewModelAction {
 
-    protected val vm: PagedBsdViewModel<A> by viewModels(
-        factoryProducer = { findViewModelProvider() },
-        ownerProducer = { findViewModelStore() }
-    )
+    protected val vm: PagedBsdViewModel<S, A> = findPagedBsdViewModelProvider<VM>()
+        .providePagedBsdViewModel()
 
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {

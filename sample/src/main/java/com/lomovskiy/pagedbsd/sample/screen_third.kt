@@ -5,14 +5,15 @@ import android.view.View
 import android.widget.Button
 import com.lomovskiy.pagedbsd.PagedBsdPage
 
-class PageThird : PagedBsdPage<UuidsPagedBsdVM.Action>(R.layout.page_third), View.OnClickListener {
+class PageThird : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_third),
+    View.OnClickListener {
 
     private lateinit var buttonStub: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.getState().observe(viewLifecycleOwner, {
-            buttonStub.text = it.selectedString
+        vm.getStateStream().observe(viewLifecycleOwner, {
+            buttonStub.text = it.selectedUuid
         })
         buttonStub = view.findViewById(R.id.button_stub)
         buttonStub.setOnClickListener(this)

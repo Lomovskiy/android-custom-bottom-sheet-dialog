@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentFactory
+import androidx.fragment.app.viewModels
+import com.lomovskiy.pagedbsd.PagedBsd
 
 class RootActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var buttonOpen: Button
     private lateinit var buttonClose: Button
 
-    private var pagedBottomSheetDialogFragment: PagedBottomSheetDialogFragment? = null
+    private var uuidPagedBsd: UuidsPagedBsd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,13 +22,13 @@ class RootActivity : AppCompatActivity(), View.OnClickListener {
         buttonClose = findViewById(R.id.button_close)
         buttonOpen.setOnClickListener(this)
         buttonClose.setOnClickListener(this)
-        pagedBottomSheetDialogFragment = PagedBottomSheetDialogFragment.newInstance()
+        uuidPagedBsd = UuidsPagedBsd()
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.button_open -> {
-                showDialog(PagedBottomSheetDialogFragment.TAG, pagedBottomSheetDialogFragment)
+                uuidPagedBsd!!.show(supportFragmentManager, "tag")
             }
             R.id.button_close -> {}
         }
@@ -33,3 +36,9 @@ class RootActivity : AppCompatActivity(), View.OnClickListener {
 
 }
 
+class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>() {
+
+    override val viewModel: UuidsPagedBsdVM by viewModels()
+    override val pageFactory: FragmentFactory = PageFactory()
+
+}

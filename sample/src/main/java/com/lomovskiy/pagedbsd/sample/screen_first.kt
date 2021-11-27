@@ -5,7 +5,8 @@ import android.view.View
 import android.widget.Button
 import com.lomovskiy.pagedbsd.PagedBsdPage
 
-class PageFirst : PagedBsdPage<UuidsPagedBsdVM.Action>(R.layout.page_first), View.OnClickListener {
+class PageFirst : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_first),
+    View.OnClickListener {
 
     private lateinit var button1: Button
     private lateinit var button2: Button
