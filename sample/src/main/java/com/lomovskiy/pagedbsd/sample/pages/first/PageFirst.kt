@@ -6,9 +6,9 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.lomovskiy.pagedbsd.PagedBsdPage
 import com.lomovskiy.pagedbsd.sample.R
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
+import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
 
-class PageFirst : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_first),
+class PageFirst : PagedBsdPage<UuidsPagedBsdViewModel, UuidsPagedBsdViewModel.State, UuidsPagedBsdViewModel.Action>(R.layout.page_first),
     View.OnClickListener {
 
     override val key: String = PageFirst::class.java.simpleName
@@ -22,7 +22,7 @@ class PageFirst : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPage
     private lateinit var button6: Button
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBsdVM.Action.Close)
+        vm.handleAction(UuidsPagedBsdViewModel.Action.Close)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +43,7 @@ class PageFirst : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPage
 
     override fun onClick(v: View) {
         vm.handleAction(
-            UuidsPagedBsdVM.Action.OnNumberButtonPressed(
+            UuidsPagedBsdViewModel.Action.OnNumberButtonPressed(
                 getNumberById(
                     v.id
                 )

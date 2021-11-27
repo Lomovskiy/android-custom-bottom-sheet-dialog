@@ -14,12 +14,10 @@ interface Navigator {
 }
 
 open class PagedBsdNavigator(
-    dialog: DialogFragment,
-    private val containerResId: Int
+    private val containerResId: Int,
+    private val childFragmentManager: FragmentManager,
+    private val parentFragmentManager: FragmentManager
 ) : Navigator {
-
-    private val childFragmentManager: FragmentManager = dialog.childFragmentManager
-    private val parentFragmentManager: FragmentManager = dialog.parentFragmentManager
 
     private var fragmentManagerStackCopy = ArrayList<String>()
 

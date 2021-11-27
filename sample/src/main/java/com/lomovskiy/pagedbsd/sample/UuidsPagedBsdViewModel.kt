@@ -2,18 +2,16 @@ package com.lomovskiy.pagedbsd.sample
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lomovskiy.pagedbsd.PagedBsdState
 import com.lomovskiy.pagedbsd.PagedBsdViewModel
-import com.lomovskiy.pagedbsd.PagedBsdViewModelAction
 import com.lomovskiy.pagedbsd.navigation.PagedBsdCoordinator
 
-class UuidsPagedBsdVM(
+class UuidsPagedBsdViewModel(
     private val coordinator: PagedBsdCoordinator
-) : PagedBsdViewModel<UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(coordinator) {
+) : PagedBsdViewModel() {
 
     private val state = MutableLiveData(State.empty())
 
-    override fun handleAction(action: Action) {
+    override fun handleAction(action: PagedBsdViewModel.Action) {
         when (action) {
             Action.Close -> {
                 coordinator.finish()
@@ -44,25 +42,7 @@ class UuidsPagedBsdVM(
         return state
     }
 
-    data class State(
-        val selectedPosition: Int?,
-        val selectedUuid: CharSequence?
-    ) : PagedBsdState {
-
-        companion object {
-
-            fun empty(): State {
-                return State(
-                    selectedPosition = null,
-                    selectedUuid = null
-                )
-            }
-
-        }
-
-    }
-
-    sealed class Action : PagedBsdViewModelAction {
+    sealed class Action : PagedBsdViewModel.Action {
         class OnNumberButtonPressed(val number: Int) : Action()
         class OnListItemClicked(val string: CharSequence) : Action()
         object OnListItemButtonPressed : Action()

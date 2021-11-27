@@ -6,9 +6,9 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.lomovskiy.pagedbsd.PagedBsdPage
 import com.lomovskiy.pagedbsd.sample.R
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
+import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
 
-class PageThird : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_third),
+class PageThird : PagedBsdPage<UuidsPagedBsdViewModel, UuidsPagedBsdViewModel.State, UuidsPagedBsdViewModel.Action>(R.layout.page_third),
     View.OnClickListener {
 
     override val key: String = PageThird::class.java.simpleName
@@ -26,11 +26,11 @@ class PageThird : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPage
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(UuidsPagedBsdVM.Action.OnListItemButtonPressed)
+        vm.handleAction(UuidsPagedBsdViewModel.Action.OnListItemButtonPressed)
     }
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBsdVM.Action.OnBackToSecondStepPressed)
+        vm.handleAction(UuidsPagedBsdViewModel.Action.OnBackToSecondStepPressed)
     }
 
 }

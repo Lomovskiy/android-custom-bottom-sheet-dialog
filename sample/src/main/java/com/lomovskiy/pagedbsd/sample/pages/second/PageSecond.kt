@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lomovskiy.pagedbsd.PagedBsdPage
 import com.lomovskiy.pagedbsd.sample.R
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
+import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
 import java.util.*
 
-class PageSecond : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPagedBsdVM.Action>(R.layout.page_second) {
+class PageSecond : PagedBsdPage<UuidsPagedBsdViewModel, UuidsPagedBsdViewModel.State, UuidsPagedBsdViewModel.Action>(R.layout.page_second) {
 
     override val key: String = PageSecond::class.java.simpleName
     override val clazz: Class<out Fragment> = PageSecond::class.java
@@ -29,7 +29,7 @@ class PageSecond : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPag
         })
         list = view.findViewById(R.id.list)
         listAdapter = PageSecondLA {
-            vm.handleAction(UuidsPagedBsdVM.Action.OnListItemClicked(it))
+            vm.handleAction(UuidsPagedBsdViewModel.Action.OnListItemClicked(it))
         }
         val lm = LinearLayoutManager(requireContext())
         list.layoutManager = lm
@@ -38,7 +38,7 @@ class PageSecond : PagedBsdPage<UuidsPagedBsdVM, UuidsPagedBsdVM.State, UuidsPag
     }
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBsdVM.Action.OnBackToFirstStepPressed)
+        vm.handleAction(UuidsPagedBsdViewModel.Action.OnBackToFirstStepPressed)
     }
 
 

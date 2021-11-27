@@ -1,4 +1,4 @@
-package com.lomovskiy.pagedbsd
+package com.lomovskiy.pagedbsd.sample
 
 import android.app.Dialog
 import android.os.Bundle
@@ -6,24 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.lomovskiy.pagedbsd.navigation.Coordinator
+import com.lomovskiy.pagedbsd.navigation.PagedBsdCoordinator
 import com.lomovskiy.pagedbsd.navigation.PagedBsdNavigator
 
-abstract class PagedBsd<VM, S, A> : BottomSheetDialogFragment(),
-    PagedBsdViewModelProvider<VM>
-        where S : PagedBsdState,
-              A : PagedBsdViewModelAction,
-              VM : PagedBsdViewModel<S, A> {
+class UuidPagedBsd : BottomSheetDialogFragment() {
 
-    protected abstract val viewModel: VM
-    protected abstract val pageFactory: FragmentFactory
+    private val navigator: PagedBsdNavigator = PagedBsdNavigator(
+        R.id.container,
+        childFragmentManager,
+        parentFragmentManager
+    )
 
-    protected val navigator: PagedBsdNavigator = PagedBsdNavigator(this, R.id.container)
+    private val coordinator: Coordinator = PagedBsdCoordinator(navigator)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        childFragmentManager.fragmentFactory = pageFactory
+        childFragmentManager.fragmentFactory = PageFactory()
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
     }
@@ -44,10 +44,6 @@ abstract class PagedBsd<VM, S, A> : BottomSheetDialogFragment(),
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_paged_bottom_sheet, container, false)
-    }
-
-    override fun providePagedBsdViewModel(): VM {
-        return viewModel
     }
 
 }

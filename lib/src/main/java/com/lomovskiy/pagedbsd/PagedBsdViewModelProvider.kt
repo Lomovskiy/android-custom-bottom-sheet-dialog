@@ -1,7 +1,7 @@
 package com.lomovskiy.pagedbsd
 
-interface PagedBsdViewModelProvider<VM> {
+interface PagedBsdViewModelProvider {
 
-    fun providePagedBsdViewModel(): VM
+    fun providePagedBsdViewModel(): PagedBsdViewModel
 
 }

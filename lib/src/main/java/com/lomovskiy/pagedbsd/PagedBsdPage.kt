@@ -10,7 +10,7 @@ import com.lomovskiy.pagedbsd.navigation.Page
 abstract class PagedBsdPage<VM, S, A>(
     @LayoutRes contentLayoutId: Int
 ) : Fragment(contentLayoutId), Page
-        where S : PagedBsdState,
+        where
               VM : PagedBsdViewModel<S, A>,
               A : PagedBsdViewModelAction {
 
