@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class PagedBsd<A, S, VM : PagedBsdViewModel<A, S>>(
+abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
     private val initialAction: A
 ) : BottomSheetDialogFragment() {
 

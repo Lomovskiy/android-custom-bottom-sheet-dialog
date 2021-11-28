@@ -2,10 +2,10 @@ package com.lomovskiy.pagedbsd.sample
 
 import com.lomovskiy.pagedbsd.*
 
-class UuidsPagedBsdViewModel(
+class UuidsPagedBsdVM(
     private val navigator: Navigator
-) : PagedBsdViewModel<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State>(
-    UuidPagedBsd.State.empty()
+) : PagedBsdVM<UuidsPagedBsdVM.Action, UuidsPagedBsd.State>(
+    UuidsPagedBsd.State.empty()
 ) {
 
     override fun handleAction(action: Action) {

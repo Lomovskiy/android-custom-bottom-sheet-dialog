@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.lomovskiy.pagedbsd.PagedBsd
 import com.lomovskiy.pagedbsd.PagedBsdNavigator
 
-class UuidPagedBsd : PagedBsd<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State, UuidsPagedBsdViewModel>(
-    UuidsPagedBsdViewModel.Action.Start
+class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, UuidsPagedBsdVM>(
+    UuidsPagedBsdVM.Action.Start
 ), ViewModelProvider.Factory {
 
-    override val vm: UuidsPagedBsdViewModel by viewModels(
+    override val vm: UuidsPagedBsdVM by viewModels(
         factoryProducer = { this },
         ownerProducer = { this }
     )
@@ -19,7 +19,7 @@ class UuidPagedBsd : PagedBsd<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State,
     override val pageFactory: FragmentFactory = PageFactory()
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return UuidsPagedBsdViewModel(
+        return UuidsPagedBsdVM(
             PagedBsdNavigator(
                 R.id.container,
                 this
