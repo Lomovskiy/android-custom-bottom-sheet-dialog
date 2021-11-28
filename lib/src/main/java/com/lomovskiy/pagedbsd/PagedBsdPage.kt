@@ -12,12 +12,12 @@ import kotlin.reflect.KClass
 
 abstract class PagedBsdPage<A, S, VM : PagedBsdVM<A, S>>(
     @LayoutRes contentLayoutId: Int,
-    private val viewModelClass: KClass<VM>
+    viewModelClass: KClass<VM>
 ) : Fragment(contentLayoutId) {
 
-    protected val vm: VM by viewModel(
+    protected val vm: VM by createViewModelLazy(
         viewModelClass,
-        { parentFragment as ViewModelStoreOwner },
+        { (parentFragment as ViewModelStoreOwner).viewModelStore },
         { parentFragment as ViewModelProvider.Factory }
     )
 
@@ -39,11 +39,5 @@ abstract class PagedBsdPage<A, S, VM : PagedBsdVM<A, S>>(
     abstract fun onBackPressed()
 
     abstract fun renderState(state: S)
-
-    private fun Fragment.viewModel(
-        clazz: KClass<VM>,
-        ownerProducer: () -> ViewModelStoreOwner,
-        factoryProducer: (() -> ViewModelProvider.Factory),
-    ) = createViewModelLazy(clazz, { ownerProducer().viewModelStore }, factoryProducer)
 
 }
