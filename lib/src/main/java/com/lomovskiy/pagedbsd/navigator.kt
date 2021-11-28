@@ -45,7 +45,7 @@ open class PagedBsdNavigatorImpl(
     }
 
     private fun handleBackToRoot() {
-        pagedBsd.childFragmentManager.popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        pagedBsd.childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun handleBack() {
