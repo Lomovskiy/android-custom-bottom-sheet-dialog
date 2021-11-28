@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidPagedBsd
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
-import com.lomovskiy.pagedbsd.PageBase
+import com.lomovskiy.pagedbsd.PagedBsdPage
 import java.util.*
 
-class PageSecond : PageBase<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State, UuidsPagedBsdViewModel>(R.layout.page_second) {
+class PageSecond : PagedBsdPage<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State, UuidsPagedBsdViewModel>(R.layout.page_second) {
 
     override val vm: UuidsPagedBsdViewModel by viewModels(
         ownerProducer = { parentFragment as ViewModelStoreOwner },

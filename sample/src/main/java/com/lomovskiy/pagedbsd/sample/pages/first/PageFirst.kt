@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidPagedBsd
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
-import com.lomovskiy.pagedbsd.PageBase
+import com.lomovskiy.pagedbsd.PagedBsdPage
 
-class PageFirst : PageBase<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State, UuidsPagedBsdViewModel>(R.layout.page_first), View.OnClickListener {
+class PageFirst : PagedBsdPage<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State, UuidsPagedBsdViewModel>(R.layout.page_first), View.OnClickListener {
 
     override val vm: UuidsPagedBsdViewModel by viewModels(
         ownerProducer = { parentFragment as ViewModelStoreOwner },

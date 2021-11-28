@@ -4,7 +4,7 @@ import com.lomovskiy.pagedbsd.*
 
 class UuidsPagedBsdViewModel(
     private val navigator: Navigator
-) : BaseViewModel<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State>(
+) : PagedBsdViewModel<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State>(
     UuidPagedBsd.State.empty()
 ) {
 

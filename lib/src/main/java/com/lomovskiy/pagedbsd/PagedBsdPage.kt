@@ -6,7 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
-abstract class PageBase<A, S, VM : BaseViewModel<A, S>>(
+abstract class PagedBsdPage<A, S, VM : PagedBsdViewModel<A, S>>(
     @LayoutRes contentLayoutId: Int
 ) : Fragment(contentLayoutId) {
 
