@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
-interface PagedBsdNavigator {
+interface Navigator {
 
     fun executeCommand(command: NavigationCommand)
 
@@ -13,10 +13,10 @@ interface PagedBsdNavigator {
 
 }
 
-open class PagedBsdNavigatorImpl(
+open class PagedBsdNavigator(
     private val containerResId: Int,
     private val dialogFragment: DialogFragment
-) : PagedBsdNavigator {
+) : Navigator {
 
     private var localStack = ArrayList<String>()
 

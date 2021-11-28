@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.lomovskiy.pagedbsd.PagedBsdNavigatorImpl
+import com.lomovskiy.pagedbsd.PagedBsdNavigator
 
 class UuidPagedBsd : BottomSheetDialogFragment(), ViewModelProvider.Factory {
 
@@ -51,7 +51,7 @@ class UuidPagedBsd : BottomSheetDialogFragment(), ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return UuidsPagedBsdViewModel(
-            PagedBsdNavigatorImpl(
+            PagedBsdNavigator(
                 R.id.container,
                 this
             )

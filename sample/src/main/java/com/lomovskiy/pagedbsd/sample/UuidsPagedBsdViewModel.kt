@@ -1,17 +1,12 @@
 package com.lomovskiy.pagedbsd.sample
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.lomovskiy.pagedbsd.*
 
 class UuidsPagedBsdViewModel(
-    private val navigator: PagedBsdNavigator
-) : ViewModel() {
+    private val navigator: Navigator
+) : BaseViewModel<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State>() {
 
-    private val state = MutableLiveData(UuidPagedBsd.State(null, null))
-
-    fun handleAction(action: Action) {
+    override fun handleAction(action: Action) {
         when (action) {
             Action.Start -> {
                 navigator.executeCommand(Replace(Pages.First))
@@ -38,10 +33,6 @@ class UuidsPagedBsdViewModel(
                 navigator.executeCommand(Back)
             }
         }
-    }
-
-    fun getStateStream(): LiveData<UuidPagedBsd.State> {
-        return state
     }
 
     sealed class Action {
