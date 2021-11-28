@@ -28,16 +28,16 @@ class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, Uuid
     }
 
     data class State(
-        val selectedPosition: Int?,
-        val selectedUuid: CharSequence?
+        val selectedUuid: CharSequence?,
+        val uuids: List<CharSequence>?
     ) {
 
         companion object {
 
             fun empty(): State {
                 return State(
-                    selectedPosition = null,
-                    selectedUuid = null
+                    selectedUuid = null,
+                    uuids = null
                 )
             }
 

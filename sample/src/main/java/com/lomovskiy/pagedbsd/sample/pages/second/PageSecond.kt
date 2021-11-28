@@ -2,9 +2,6 @@ package com.lomovskiy.pagedbsd.sample.pages.second
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +9,6 @@ import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsd
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
 import com.lomovskiy.pagedbsd.PagedBsdPage
-import java.util.*
 
 class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, UuidsPagedBsdVM>(
     R.layout.page_second,
@@ -40,9 +36,7 @@ class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, Uui
     }
 
     override fun renderState(state: UuidsPagedBsd.State) {
-        listAdapter?.submitList(List(state.selectedPosition ?: 0) {
-            UUID.randomUUID().toString()
-        })
+        listAdapter?.submitList(state.uuids)
     }
 
 }

@@ -3,9 +3,6 @@ package com.lomovskiy.pagedbsd.sample.pages.first
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsd
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM

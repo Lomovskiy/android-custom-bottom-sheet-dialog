@@ -1,6 +1,7 @@
 package com.lomovskiy.pagedbsd.sample
 
 import com.lomovskiy.pagedbsd.*
+import java.util.*
 
 class UuidsPagedBsdVM(
     private val navigator: Navigator
@@ -24,11 +25,14 @@ class UuidsPagedBsdVM(
                 navigator.executeCommand(Forward(Pages.Third))
             }
             is Action.PressedButtonNumber -> {
-                state.value = state.value!!.copy(selectedPosition = action.number)
+                val uuids: List<CharSequence> = List(action.number) {
+                    UUID.randomUUID().toString()
+                }
+                state.value = state.value!!.copy(uuids = uuids)
                 navigator.executeCommand(Forward(Pages.Second))
             }
             Action.PressedButtonBackToFirst -> {
-                state.value = state.value!!.copy(selectedPosition = null)
+                state.value = state.value!!.copy(uuids = null)
                 navigator.executeCommand(Back)
             }
             Action.PressedButtonBackToSecond -> {
