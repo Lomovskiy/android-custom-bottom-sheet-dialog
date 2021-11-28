@@ -2,16 +2,24 @@ package com.lomovskiy.pagedbsd.sample.pages.second
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidPagedBsd
 import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdViewModel
-import com.lomovskiy.pagedbsd.sample.pages.PageBase
+import com.lomovskiy.pagedbsd.PageBase
 import java.util.*
 
-class PageSecond : PageBase(R.layout.page_second) {
+class PageSecond : PageBase<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State, UuidsPagedBsdViewModel>(R.layout.page_second) {
+
+    override val vm: UuidsPagedBsdViewModel by viewModels(
+        ownerProducer = { parentFragment as ViewModelStoreOwner },
+        factoryProducer = { parentFragment as ViewModelProvider.Factory }
+    )
 
     private lateinit var list: RecyclerView
 
@@ -38,6 +46,5 @@ class PageSecond : PageBase(R.layout.page_second) {
             UUID.randomUUID().toString()
         })
     }
-
 
 }
