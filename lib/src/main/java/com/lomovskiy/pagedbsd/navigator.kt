@@ -16,16 +16,20 @@ interface PagedBsdNavigator {
 
 open class PagedBsdNavigatorImpl(
     private val containerResId: Int,
-    private val pagedBsd: DialogFragment
+    private val dialogFragment: DialogFragment
 ) : PagedBsdNavigator {
 
+    private var localStack = ArrayList<String>()
+
     override fun executeCommand(command: NavigationCommand) {
-        pagedBsd.childFragmentManager.executePendingTransactions()
+        dialogFragment.childFragmentManager.executePendingTransactions()
+        copyStack()
         executeCommandInternal(command)
     }
 
     override fun executeCommands(commands: Array<out NavigationCommand>) {
-        pagedBsd.childFragmentManager.executePendingTransactions()
+        dialogFragment.childFragmentManager.executePendingTransactions()
+        copyStack()
         commands.forEach(::executeCommandInternal)
     }
 
@@ -45,14 +49,16 @@ open class PagedBsdNavigatorImpl(
     }
 
     private fun handleBackToRoot() {
-        pagedBsd.childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        localStack = ArrayList()
+        dialogFragment.childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun handleBack() {
-        if (pagedBsd.childFragmentManager.backStackEntryCount == 0) {
-            pagedBsd.dismiss()
+        if (localStack.isNotEmpty()) {
+            dialogFragment.childFragmentManager.popBackStack()
+            localStack.removeLast()
         } else {
-            pagedBsd.childFragmentManager.popBackStack()
+            dialogFragment.dismiss()
         }
     }
 
@@ -61,8 +67,9 @@ open class PagedBsdNavigatorImpl(
     }
 
     private fun handleReplaceOn(page: Page) {
-        if (pagedBsd.childFragmentManager.backStackEntryCount != 0) {
-            pagedBsd.childFragmentManager.popBackStack()
+        if (localStack.isNotEmpty()) {
+            dialogFragment.childFragmentManager.popBackStack()
+            localStack.removeLast()
             commitPage(page, true)
         } else {
             commitPage(page, false)
@@ -70,7 +77,7 @@ open class PagedBsdNavigatorImpl(
     }
 
     private fun commitPage(page: Page, addToBackStack: Boolean) {
-        val transaction: FragmentTransaction = pagedBsd.childFragmentManager.beginTransaction()
+        val transaction: FragmentTransaction = dialogFragment.childFragmentManager.beginTransaction()
 //        val currentFragment: Fragment? = childFragmentManager.findFragmentById(containerResId)
         val nextFragment: Class<out Fragment> = page.classRef
         transaction.setReorderingAllowed(true)
@@ -78,8 +85,16 @@ open class PagedBsdNavigatorImpl(
         transaction.replace(containerResId, nextFragment, null, page.key)
         if (addToBackStack) {
             transaction.addToBackStack(page.key)
+            localStack.add(page.key)
         }
         transaction.commit()
+    }
+
+    private fun copyStack() {
+        localStack = ArrayList()
+        for (i in 0 until dialogFragment.childFragmentManager.backStackEntryCount) {
+            localStack.add(dialogFragment.childFragmentManager.getBackStackEntryAt(i).name!!)
+        }
     }
 
 }
