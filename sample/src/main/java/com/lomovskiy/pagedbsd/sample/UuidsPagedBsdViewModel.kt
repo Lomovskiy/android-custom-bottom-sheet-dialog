@@ -14,7 +14,7 @@ class UuidsPagedBsdViewModel(
     fun handleAction(action: Action) {
         when (action) {
             Action.Start -> {
-                navigator.executeCommand(Replace(Pages.PageFirst))
+                navigator.executeCommand(Replace(Pages.First))
             }
             Action.Close -> {
                 navigator.executeCommands(arrayOf(
@@ -24,11 +24,11 @@ class UuidsPagedBsdViewModel(
             }
             is Action.SelectedListItem -> {
                 state.value = state.value!!.copy(selectedUuid = action.item)
-                navigator.executeCommand(Forward(Pages.PageThird))
+                navigator.executeCommand(Forward(Pages.Third))
             }
             is Action.PressedButtonNumber -> {
                 state.value = state.value!!.copy(selectedPosition = action.number)
-                navigator.executeCommand(Forward(Pages.PageSecond))
+                navigator.executeCommand(Forward(Pages.Second))
             }
             Action.PressedButtonBackToFirst -> {
                 state.value = state.value!!.copy(selectedPosition = null)

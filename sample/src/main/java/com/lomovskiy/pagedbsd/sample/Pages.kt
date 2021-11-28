@@ -1,31 +1,34 @@
 package com.lomovskiy.pagedbsd.sample
 
 import androidx.fragment.app.Fragment
-import com.lomovskiy.pagedbsd.navigation.Page
+import com.lomovskiy.pagedbsd.Page
+import com.lomovskiy.pagedbsd.sample.pages.first.PageFirst
+import com.lomovskiy.pagedbsd.sample.pages.second.PageSecond
+import com.lomovskiy.pagedbsd.sample.pages.third.PageThird
 
 object Pages {
 
-    object PageFirst : Page {
+    object First : Page {
 
         override val key: String = PageFirst::class.java.name
 
-        override val classRef: Class<out Fragment> = com.lomovskiy.pagedbsd.sample.pages.first.PageFirst::class.java
+        override val classRef: Class<out Fragment> = PageFirst::class.java
 
     }
 
-    object PageSecond : Page {
+    object Second : Page {
 
         override val key: String = PageSecond::class.java.name
 
-        override val classRef: Class<out Fragment> = com.lomovskiy.pagedbsd.sample.pages.second.PageSecond::class.java
+        override val classRef: Class<out Fragment> = PageSecond::class.java
 
     }
 
-    object PageThird : Page {
+    object Third : Page {
 
         override val key: String = PageThird::class.java.name
 
-        override val classRef: Class<out Fragment> = com.lomovskiy.pagedbsd.sample.pages.third.PageThird::class.java
+        override val classRef: Class<out Fragment> = PageThird::class.java
 
     }
 

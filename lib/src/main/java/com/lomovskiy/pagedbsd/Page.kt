@@ -1,4 +1,4 @@
-package com.lomovskiy.pagedbsd.navigation
+package com.lomovskiy.pagedbsd
 
 import androidx.fragment.app.Fragment
 

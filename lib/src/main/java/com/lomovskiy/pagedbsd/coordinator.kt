@@ -1,4 +1,4 @@
-package com.lomovskiy.pagedbsd.navigation
+package com.lomovskiy.pagedbsd
 
 //interface Coordinator {
 //
