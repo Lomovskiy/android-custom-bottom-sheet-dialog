@@ -4,5 +4,5 @@ import androidx.fragment.app.Fragment
 
 interface Page {
     val key: String
-    val clazz: Class<out Fragment>
+    val classRef: Class<out Fragment>
 }

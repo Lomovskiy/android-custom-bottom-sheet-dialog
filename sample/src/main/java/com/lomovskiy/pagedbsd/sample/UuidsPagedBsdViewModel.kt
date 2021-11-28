@@ -3,34 +3,40 @@ package com.lomovskiy.pagedbsd.sample
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lomovskiy.pagedbsd.navigation.Coordinator
+import com.lomovskiy.pagedbsd.navigation.*
 
 class UuidsPagedBsdViewModel(
-    private val coordinator: Coordinator
+    private val navigator: PagedBsdNavigator
 ) : ViewModel() {
 
     private val state = MutableLiveData(UuidPagedBsd.State(null, null))
 
     fun handleAction(action: Action) {
         when (action) {
+            Action.Start -> {
+                navigator.executeCommand(Replace(Pages.PageFirst))
+            }
             Action.Close -> {
-                coordinator.finish()
+                navigator.executeCommands(arrayOf(
+                    BackToRoot,
+                    Back
+                ))
             }
             is Action.SelectedListItem -> {
                 state.value = state.value!!.copy(selectedUuid = action.item)
-                coordinator.replaceOn(Pages.PageThird)
+                navigator.executeCommand(Replace(Pages.PageThird))
             }
             is Action.PressedButtonNumber -> {
                 state.value = state.value!!.copy(selectedPosition = action.number)
-                coordinator.replaceOn(Pages.PageSecond)
+                navigator.executeCommand(Replace(Pages.PageSecond))
             }
             Action.PressedButtonBackToFirst -> {
                 state.value = state.value!!.copy(selectedPosition = null)
-                coordinator.backTo(Pages.PageFirst)
+                navigator.executeCommand(Replace(Pages.PageFirst))
             }
             Action.PressedButtonBackToSecond -> {
                 state.value = state.value!!.copy(selectedPosition = null)
-                coordinator.backTo(Pages.PageSecond)
+                navigator.executeCommand(Replace(Pages.PageSecond))
             }
         }
     }
@@ -40,6 +46,7 @@ class UuidsPagedBsdViewModel(
     }
 
     sealed class Action {
+        object Start : Action()
         class PressedButtonNumber(val number: Int) : Action()
         class SelectedListItem(val item: CharSequence) : Action()
         object PressedButtonBackToFirst : Action()

@@ -6,21 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.lomovskiy.pagedbsd.navigation.Coordinator
-import com.lomovskiy.pagedbsd.navigation.PagedBsdCoordinator
-import com.lomovskiy.pagedbsd.navigation.PagedBsdNavigator
+import com.lomovskiy.pagedbsd.navigation.PagedBsdNavigatorImpl
 
-class UuidPagedBsd : BottomSheetDialogFragment() {
+class UuidPagedBsd : BottomSheetDialogFragment(), ViewModelProvider.Factory {
 
-    private val navigator: PagedBsdNavigator = PagedBsdNavigator(
-        R.id.container,
-        childFragmentManager,
-        parentFragmentManager
+    private val vm: UuidsPagedBsdViewModel by viewModels(
+        factoryProducer = { this },
+        ownerProducer = { this }
     )
-
-    private val coordinator: Coordinator = PagedBsdCoordinator(navigator)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         childFragmentManager.fragmentFactory = PageFactory()
@@ -44,6 +42,22 @@ class UuidPagedBsd : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_paged_bottom_sheet, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        vm.handleAction(UuidsPagedBsdViewModel.Action.Start)
+    }
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return UuidsPagedBsdViewModel(
+            PagedBsdNavigatorImpl(
+                R.id.container,
+                this,
+                childFragmentManager,
+                parentFragmentManager
+            )
+        ) as T
     }
 
     data class State(
