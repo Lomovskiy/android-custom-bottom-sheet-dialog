@@ -61,6 +61,19 @@ class UuidPagedBsd : BottomSheetDialogFragment(), ViewModelProvider.Factory {
     data class State(
         val selectedPosition: Int?,
         val selectedUuid: CharSequence?
-    )
+    ) {
+
+        companion object {
+
+            fun empty(): State {
+                return State(
+                    selectedPosition = null,
+                    selectedUuid = null
+                )
+            }
+
+        }
+
+    }
 
 }

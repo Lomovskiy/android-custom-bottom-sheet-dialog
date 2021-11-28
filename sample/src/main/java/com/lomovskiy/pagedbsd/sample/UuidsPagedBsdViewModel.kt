@@ -4,7 +4,9 @@ import com.lomovskiy.pagedbsd.*
 
 class UuidsPagedBsdViewModel(
     private val navigator: Navigator
-) : BaseViewModel<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State>() {
+) : BaseViewModel<UuidsPagedBsdViewModel.Action, UuidPagedBsd.State>(
+    UuidPagedBsd.State.empty()
+) {
 
     override fun handleAction(action: Action) {
         when (action) {
