@@ -1,9 +1,10 @@
-package com.lomovskiy.pagedbsd.navigation
+package com.lomovskiy.pagedbsd
 
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.lomovskiy.pagedbsd.navigation.Page
 
 interface PagedBsdNavigator {
 
@@ -15,18 +16,16 @@ interface PagedBsdNavigator {
 
 open class PagedBsdNavigatorImpl(
     private val containerResId: Int,
-    private val pagedBsd: DialogFragment,
-    private val childFragmentManager: FragmentManager,
-    private val parentFragmentManager: FragmentManager
+    private val pagedBsd: DialogFragment
 ) : PagedBsdNavigator {
 
     override fun executeCommand(command: NavigationCommand) {
-        childFragmentManager.executePendingTransactions()
+        pagedBsd.childFragmentManager.executePendingTransactions()
         executeCommandInternal(command)
     }
 
     override fun executeCommands(commands: Array<out NavigationCommand>) {
-        childFragmentManager.executePendingTransactions()
+        pagedBsd.childFragmentManager.executePendingTransactions()
         commands.forEach(::executeCommandInternal)
     }
 
@@ -46,14 +45,14 @@ open class PagedBsdNavigatorImpl(
     }
 
     private fun handleBackToRoot() {
-        childFragmentManager.popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        pagedBsd.childFragmentManager.popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun handleBack() {
-        if (childFragmentManager.backStackEntryCount == 0) {
+        if (pagedBsd.childFragmentManager.backStackEntryCount == 0) {
             pagedBsd.dismiss()
         } else {
-            childFragmentManager.popBackStack()
+            pagedBsd.childFragmentManager.popBackStack()
         }
     }
 
@@ -62,8 +61,8 @@ open class PagedBsdNavigatorImpl(
     }
 
     private fun handleReplaceOn(page: Page) {
-        if (childFragmentManager.backStackEntryCount != 0) {
-            childFragmentManager.popBackStack()
+        if (pagedBsd.childFragmentManager.backStackEntryCount != 0) {
+            pagedBsd.childFragmentManager.popBackStack()
             commitPage(page, true)
         } else {
             commitPage(page, false)
@@ -71,7 +70,7 @@ open class PagedBsdNavigatorImpl(
     }
 
     private fun commitPage(page: Page, addToBackStack: Boolean) {
-        val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
+        val transaction: FragmentTransaction = pagedBsd.childFragmentManager.beginTransaction()
 //        val currentFragment: Fragment? = childFragmentManager.findFragmentById(containerResId)
         val nextFragment: Class<out Fragment> = page.classRef
         transaction.setReorderingAllowed(true)

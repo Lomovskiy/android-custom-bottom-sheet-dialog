@@ -1,4 +1,6 @@
-package com.lomovskiy.pagedbsd.navigation
+package com.lomovskiy.pagedbsd
+
+import com.lomovskiy.pagedbsd.navigation.Page
 
 interface NavigationCommand
 

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.lomovskiy.pagedbsd.navigation.PagedBsdNavigatorImpl
+import com.lomovskiy.pagedbsd.PagedBsdNavigatorImpl
 
 class UuidPagedBsd : BottomSheetDialogFragment(), ViewModelProvider.Factory {
 
@@ -53,9 +53,7 @@ class UuidPagedBsd : BottomSheetDialogFragment(), ViewModelProvider.Factory {
         return UuidsPagedBsdViewModel(
             PagedBsdNavigatorImpl(
                 R.id.container,
-                this,
-                childFragmentManager,
-                parentFragmentManager
+                this
             )
         ) as T
     }

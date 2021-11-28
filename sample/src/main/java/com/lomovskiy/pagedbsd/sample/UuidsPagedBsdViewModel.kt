@@ -3,7 +3,7 @@ package com.lomovskiy.pagedbsd.sample
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lomovskiy.pagedbsd.navigation.*
+import com.lomovskiy.pagedbsd.*
 
 class UuidsPagedBsdViewModel(
     private val navigator: PagedBsdNavigator
@@ -24,19 +24,18 @@ class UuidsPagedBsdViewModel(
             }
             is Action.SelectedListItem -> {
                 state.value = state.value!!.copy(selectedUuid = action.item)
-                navigator.executeCommand(Replace(Pages.PageThird))
+                navigator.executeCommand(Forward(Pages.PageThird))
             }
             is Action.PressedButtonNumber -> {
                 state.value = state.value!!.copy(selectedPosition = action.number)
-                navigator.executeCommand(Replace(Pages.PageSecond))
+                navigator.executeCommand(Forward(Pages.PageSecond))
             }
             Action.PressedButtonBackToFirst -> {
                 state.value = state.value!!.copy(selectedPosition = null)
-                navigator.executeCommand(Replace(Pages.PageFirst))
+                navigator.executeCommand(Back)
             }
             Action.PressedButtonBackToSecond -> {
-                state.value = state.value!!.copy(selectedPosition = null)
-                navigator.executeCommand(Replace(Pages.PageSecond))
+                navigator.executeCommand(Back)
             }
         }
     }
