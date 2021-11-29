@@ -2,6 +2,7 @@ package com.lomovskiy.pagedbsd
 
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlin.reflect.KClass
 
-abstract class PagedBottomSheet<A, S, VM : PagedBottomSheetVM<A, S>>(
+abstract class PagedBottomSheet<C : PagedBottomSheet.Config, A, S, VM : PagedBottomSheetVM<A, S>>(
     viewModelClass: KClass<VM>,
     private val initialAction: A
 ) : BottomSheetDialogFragment(), ViewModelProvider.Factory {
@@ -24,6 +25,10 @@ abstract class PagedBottomSheet<A, S, VM : PagedBottomSheetVM<A, S>>(
         { this.viewModelStore },
         { this }
     )
+
+    protected val config: C
+        get() = requireArguments().getParcelable(EXTRA_CONFIG) ?:
+        throw IllegalStateException("Config must be provided!")
 
     protected lateinit var navigator: Navigator
 
@@ -38,7 +43,10 @@ abstract class PagedBottomSheet<A, S, VM : PagedBottomSheetVM<A, S>>(
     override fun onCreate(savedInstanceState: Bundle?) {
         childFragmentManager.fragmentFactory = pageFactory
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomDialogStyle)
+        setStyle(
+            config.getConfigStyle() ?: DialogFragment.STYLE_NORMAL,
+            config.getConfigTheme() ?: 0
+        )
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -77,6 +85,20 @@ abstract class PagedBottomSheet<A, S, VM : PagedBottomSheetVM<A, S>>(
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return onCreateViewModel(modelClass) as T
+    }
+
+    interface Config : Parcelable {
+
+        fun getConfigStyle(): Int?
+
+        fun getConfigTheme(): Int?
+
+    }
+
+    companion object {
+
+        const val EXTRA_CONFIG = "EXTRA_CONFIG"
+
     }
 
 }
