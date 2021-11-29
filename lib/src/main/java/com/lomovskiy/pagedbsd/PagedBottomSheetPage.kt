@@ -6,8 +6,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.createViewModelLazy
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 abstract class PagedBottomSheetPage<A, S, VM : PagedBottomSheetVM<A, S>>(
@@ -33,7 +34,11 @@ abstract class PagedBottomSheetPage<A, S, VM : PagedBottomSheetVM<A, S>>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
-        vm.getStateStream().observe(viewLifecycleOwner, ::renderState)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                vm.getStateStream().collect(::renderState)
+            }
+        }
     }
 
     abstract fun onBackPressed()

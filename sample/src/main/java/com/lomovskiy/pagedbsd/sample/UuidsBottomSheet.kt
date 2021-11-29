@@ -7,16 +7,16 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import com.lomovskiy.pagedbsd.PagedBottomSheet
 
-class UuidsBottomSheet : PagedBottomSheet<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State, UuidsPagedBottomSheetVM>(
-    UuidsPagedBottomSheetVM::class,
-    UuidsPagedBottomSheetVM.Action.Start
+class UuidsBottomSheet : PagedBottomSheet<UuidsBottomSheetVM.Action, UuidsBottomSheet.State, UuidsBottomSheetVM>(
+    UuidsBottomSheetVM::class,
+    UuidsBottomSheetVM.Action.Start
 ) {
 
     override val pageFactory: FragmentFactory = PageFactory()
 
-    override fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): UuidsPagedBottomSheetVM {
+    override fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): UuidsBottomSheetVM {
         val coordinator: Coordinator = UuidPagedBottomSheetCoordinator(navigator)
-        return UuidsPagedBottomSheetVM(coordinator)
+        return UuidsBottomSheetVM(coordinator)
     }
 
     override fun setupFragmentTransaction(

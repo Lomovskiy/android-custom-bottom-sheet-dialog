@@ -5,12 +5,12 @@ import android.view.View
 import android.widget.Button
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidsBottomSheet
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBottomSheetVM
+import com.lomovskiy.pagedbsd.sample.UuidsBottomSheetVM
 import com.lomovskiy.pagedbsd.PagedBottomSheetPage
 
-class PageThird : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State, UuidsPagedBottomSheetVM>(
+class PageThird : PagedBottomSheetPage<UuidsBottomSheetVM.Action, UuidsBottomSheet.State, UuidsBottomSheetVM>(
     R.layout.page_third,
-    UuidsPagedBottomSheetVM::class
+    UuidsBottomSheetVM::class
 ), View.OnClickListener {
 
     private lateinit var buttonStub: Button
@@ -22,11 +22,11 @@ class PageThird : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBott
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(UuidsPagedBottomSheetVM.Action.Close)
+        vm.handleAction(UuidsBottomSheetVM.Action.Close)
     }
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBottomSheetVM.Action.PressedButtonBackToSecond)
+        vm.handleAction(UuidsBottomSheetVM.Action.PressedButtonBackToSecond)
     }
 
     override fun renderState(state: UuidsBottomSheet.State) {

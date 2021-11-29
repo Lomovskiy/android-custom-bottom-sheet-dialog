@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidsBottomSheet
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBottomSheetVM
+import com.lomovskiy.pagedbsd.sample.UuidsBottomSheetVM
 import com.lomovskiy.pagedbsd.PagedBottomSheetPage
 
-class PageSecond : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State, UuidsPagedBottomSheetVM>(
+class PageSecond : PagedBottomSheetPage<UuidsBottomSheetVM.Action, UuidsBottomSheet.State, UuidsBottomSheetVM>(
     R.layout.page_second,
-    UuidsPagedBottomSheetVM::class
+    UuidsBottomSheetVM::class
 ) {
 
     private lateinit var list: RecyclerView
@@ -23,7 +23,7 @@ class PageSecond : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBot
         super.onViewCreated(view, savedInstanceState)
         list = view.findViewById(R.id.list)
         listAdapter = PageSecondLA {
-            vm.handleAction(UuidsPagedBottomSheetVM.Action.SelectedListItem(it))
+            vm.handleAction(UuidsBottomSheetVM.Action.SelectedListItem(it))
         }
         val lm = LinearLayoutManager(requireContext())
         list.layoutManager = lm
@@ -32,7 +32,7 @@ class PageSecond : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBot
     }
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBottomSheetVM.Action.PressedButtonBackToFirst)
+        vm.handleAction(UuidsBottomSheetVM.Action.PressedButtonBackToFirst)
     }
 
     override fun renderState(state: UuidsBottomSheet.State) {

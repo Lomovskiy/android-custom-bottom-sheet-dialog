@@ -1,18 +1,14 @@
 package com.lomovskiy.pagedbsd
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 abstract class PagedBottomSheetVM<A, S>(initialState: S) : ViewModel() {
     
-    protected val state = MutableLiveData<S>()
-
-    init {
-        state.value = initialState
-    }
+    protected val state = MutableStateFlow(initialState)
     
-    fun getStateStream(): LiveData<S> {
+    fun getStateStream(): Flow<S> {
         return state
     }
     

@@ -3,9 +3,9 @@ package com.lomovskiy.pagedbsd.sample
 import com.lomovskiy.pagedbsd.*
 import java.util.*
 
-class UuidsPagedBottomSheetVM(
+class UuidsBottomSheetVM(
     private val coordinator: Coordinator
-) : PagedBottomSheetVM<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State>(
+) : PagedBottomSheetVM<UuidsBottomSheetVM.Action, UuidsBottomSheet.State>(
     UuidsBottomSheet.State.empty()
 ) {
 
@@ -18,18 +18,18 @@ class UuidsPagedBottomSheetVM(
                 coordinator.finish()
             }
             is Action.SelectedListItem -> {
-                state.value = state.value!!.copy(selectedUuid = action.item)
+                state.value = state.value.copy(selectedUuid = action.item)
                 coordinator.onUuidSelected()
             }
             is Action.PressedButtonNumber -> {
                 val uuids: List<CharSequence> = List(action.number) {
                     UUID.randomUUID().toString()
                 }
-                state.value = state.value!!.copy(uuids = uuids)
+                state.value = state.value.copy(uuids = uuids)
                 coordinator.onNumberSelected()
             }
             Action.PressedButtonBackToFirst -> {
-                state.value = state.value!!.copy(uuids = null)
+                state.value = state.value.copy(uuids = null)
                 coordinator.onBackToSelectNumber()
             }
             Action.PressedButtonBackToSecond -> {

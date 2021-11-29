@@ -5,12 +5,12 @@ import android.view.View
 import android.widget.Button
 import com.lomovskiy.pagedbsd.sample.R
 import com.lomovskiy.pagedbsd.sample.UuidsBottomSheet
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBottomSheetVM
+import com.lomovskiy.pagedbsd.sample.UuidsBottomSheetVM
 import com.lomovskiy.pagedbsd.PagedBottomSheetPage
 
-class PageFirst : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State, UuidsPagedBottomSheetVM>(
+class PageFirst : PagedBottomSheetPage<UuidsBottomSheetVM.Action, UuidsBottomSheet.State, UuidsBottomSheetVM>(
     R.layout.page_first,
-    UuidsPagedBottomSheetVM::class
+    UuidsBottomSheetVM::class
 ), View.OnClickListener {
 
     private lateinit var button1: Button
@@ -21,7 +21,7 @@ class PageFirst : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBott
     private lateinit var button6: Button
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBottomSheetVM.Action.Close)
+        vm.handleAction(UuidsBottomSheetVM.Action.Close)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class PageFirst : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBott
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(UuidsPagedBottomSheetVM.Action.PressedButtonNumber(getNumberById(v.id)))
+        vm.handleAction(UuidsBottomSheetVM.Action.PressedButtonNumber(getNumberById(v.id)))
     }
 
     override fun renderState(state: UuidsBottomSheet.State) {}
