@@ -35,11 +35,11 @@ class UuidPagedBottomSheetCoordinator(
 
 
     override fun onBackToSelectNumber() {
-        navigator.executeCommand(Back)
+        navigator.executeCommand(BackTo(Routes.First))
     }
 
     override fun finish() {
-        navigator.executeCommands(arrayOf(BackToRoot, Back))
+        navigator.executeCommands(arrayOf(BackTo(null), Back))
     }
 
 }

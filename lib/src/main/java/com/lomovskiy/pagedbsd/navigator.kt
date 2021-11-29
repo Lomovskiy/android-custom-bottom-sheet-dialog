@@ -38,15 +38,26 @@ open class PagedBsdNavigator(
     private fun executeCommandInternal(command: NavigationCommand) {
         when (command) {
             Back -> handleBack()
-            BackToRoot -> handleBackToRoot()
+            is BackTo -> handleBackTo(command.route)
             is Forward -> handleForwardTo(command.route)
             is Replace -> handleReplaceOn(command.route)
         }
     }
 
-    private fun handleBackToRoot() {
-        localStack = ArrayList()
-        dialogFragment.childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    private fun handleBackTo(route: Route?) {
+        if (route == null) {
+            resetStack()
+        } else {
+            val key: String = route.key
+            val idx: Int = localStack.indexOf(key)
+            if (idx == -1) {
+                resetStack()
+            } else {
+                val forRemove = localStack.subList(idx, localStack.size)
+                dialogFragment.childFragmentManager.popBackStack(forRemove.first().toString(), 0)
+                forRemove.clear()
+            }
+        }
     }
 
     private fun handleBack() {
@@ -86,6 +97,11 @@ open class PagedBsdNavigator(
             localStack.add(route.key)
         }
         fragmentTransaction.commit()
+    }
+
+    private fun resetStack() {
+        localStack = ArrayList()
+        dialogFragment.childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun copyStack() {

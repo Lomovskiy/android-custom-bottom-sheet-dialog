@@ -14,15 +14,25 @@ class PageThird : PagedBottomSheetPage<UuidsBottomSheetVM.Action, UuidsBottomShe
 ), View.OnClickListener {
 
     private lateinit var buttonStub: Button
+    private lateinit var buttonBackToFirst: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         buttonStub = view.findViewById(R.id.button_stub)
+        buttonBackToFirst = view.findViewById(R.id.button_back_to_first)
         buttonStub.setOnClickListener(this)
+        buttonBackToFirst.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(UuidsBottomSheetVM.Action.Close)
+        when (v.id) {
+            R.id.button_stub -> {
+                vm.handleAction(UuidsBottomSheetVM.Action.Close)
+            }
+            R.id.button_back_to_first -> {
+                vm.handleAction(UuidsBottomSheetVM.Action.PressedButtonBackToFirst)
+            }
+        }
     }
 
     override fun onBackPressed() {
