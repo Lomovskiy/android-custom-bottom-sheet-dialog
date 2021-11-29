@@ -27,6 +27,8 @@ abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
         { this }
     )
 
+    protected lateinit var navigator: Navigator
+
     abstract fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,7 @@ abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navigator = PagedBsdNavigator(R.id.container, this)
         vm.handleAction(initialAction)
     }
 

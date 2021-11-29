@@ -14,7 +14,6 @@ class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, Uuid
     override val pageFactory: FragmentFactory = PageFactory()
 
     override fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): UuidsPagedBsdVM {
-        val navigator: Navigator = PagedBsdNavigator(R.id.container, this)
         val coordinator: Coordinator = UuidPagedBsdCoordinator(navigator)
         return UuidsPagedBsdVM(coordinator)
     }
