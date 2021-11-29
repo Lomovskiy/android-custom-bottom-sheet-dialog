@@ -3,10 +3,10 @@ package com.lomovskiy.pagedbsd.sample
 import com.lomovskiy.pagedbsd.*
 import java.util.*
 
-class UuidsPagedBsdVM(
+class UuidsPagedBottomSheetVM(
     private val coordinator: Coordinator
-) : PagedBsdVM<UuidsPagedBsdVM.Action, UuidsPagedBsd.State>(
-    UuidsPagedBsd.State.empty()
+) : PagedBottomSheetVM<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State>(
+    UuidsBottomSheet.State.empty()
 ) {
 
     override fun handleAction(action: Action) {

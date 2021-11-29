@@ -12,7 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlin.reflect.KClass
 
-abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
+abstract class PagedBottomSheet<A, S, VM : PagedBottomSheetVM<A, S>>(
     viewModelClass: KClass<VM>,
     private val initialAction: A
 ) : BottomSheetDialogFragment(), ViewModelProvider.Factory {
@@ -68,7 +68,7 @@ abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
                 currentFragment: Fragment?,
                 nextFragment: Fragment
             ) {
-                this@PagedBsd.setupFragmentTransaction(fragmentTransaction, currentFragment, nextFragment)
+                this@PagedBottomSheet.setupFragmentTransaction(fragmentTransaction, currentFragment, nextFragment)
             }
 
         }

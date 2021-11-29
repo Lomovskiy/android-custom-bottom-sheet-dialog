@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-abstract class PagedBsdVM<A, S>(initialState: S) : ViewModel() {
+abstract class PagedBottomSheetVM<A, S>(initialState: S) : ViewModel() {
     
     protected val state = MutableLiveData<S>()
 

@@ -5,20 +5,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
-import com.lomovskiy.pagedbsd.Navigator
-import com.lomovskiy.pagedbsd.PagedBsd
-import com.lomovskiy.pagedbsd.PagedBsdNavigator
+import com.lomovskiy.pagedbsd.PagedBottomSheet
 
-class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, UuidsPagedBsdVM>(
-    UuidsPagedBsdVM::class,
-    UuidsPagedBsdVM.Action.Start
+class UuidsBottomSheet : PagedBottomSheet<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State, UuidsPagedBottomSheetVM>(
+    UuidsPagedBottomSheetVM::class,
+    UuidsPagedBottomSheetVM.Action.Start
 ) {
 
     override val pageFactory: FragmentFactory = PageFactory()
 
-    override fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): UuidsPagedBsdVM {
-        val coordinator: Coordinator = UuidPagedBsdCoordinator(navigator)
-        return UuidsPagedBsdVM(coordinator)
+    override fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): UuidsPagedBottomSheetVM {
+        val coordinator: Coordinator = UuidPagedBottomSheetCoordinator(navigator)
+        return UuidsPagedBottomSheetVM(coordinator)
     }
 
     override fun setupFragmentTransaction(

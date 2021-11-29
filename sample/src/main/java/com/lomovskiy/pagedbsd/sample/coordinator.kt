@@ -13,20 +13,20 @@ interface Coordinator {
 
 }
 
-class UuidPagedBsdCoordinator(
+class UuidPagedBottomSheetCoordinator(
     private val navigator: Navigator
 ) : Coordinator {
 
     override fun start() {
-        navigator.executeCommand(Replace(Pages.First))
+        navigator.executeCommand(Replace(Routes.First))
     }
 
     override fun onNumberSelected() {
-        navigator.executeCommand(Forward(Pages.Second))
+        navigator.executeCommand(Forward(Routes.Second))
     }
 
     override fun onUuidSelected() {
-        navigator.executeCommand(Forward(Pages.Third))
+        navigator.executeCommand(Forward(Routes.Third))
     }
 
     override fun onBackToSelectUuid() {

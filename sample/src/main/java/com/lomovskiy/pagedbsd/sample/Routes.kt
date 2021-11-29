@@ -1,14 +1,14 @@
 package com.lomovskiy.pagedbsd.sample
 
 import androidx.fragment.app.Fragment
-import com.lomovskiy.pagedbsd.Page
+import com.lomovskiy.pagedbsd.Route
 import com.lomovskiy.pagedbsd.sample.pages.first.PageFirst
 import com.lomovskiy.pagedbsd.sample.pages.second.PageSecond
 import com.lomovskiy.pagedbsd.sample.pages.third.PageThird
 
-object Pages {
+object Routes {
 
-    object First : Page {
+    object First : Route {
 
         override val key: String = PageFirst::class.java.name
 
@@ -16,7 +16,7 @@ object Pages {
 
     }
 
-    object Second : Page {
+    object Second : Route {
 
         override val key: String = PageSecond::class.java.name
 
@@ -24,7 +24,7 @@ object Pages {
 
     }
 
-    object Third : Page {
+    object Third : Route {
 
         override val key: String = PageThird::class.java.name
 

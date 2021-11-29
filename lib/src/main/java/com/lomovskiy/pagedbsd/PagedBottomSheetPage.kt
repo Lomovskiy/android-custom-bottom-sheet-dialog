@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import kotlin.reflect.KClass
 
-abstract class PagedBsdPage<A, S, VM : PagedBsdVM<A, S>>(
+abstract class PagedBottomSheetPage<A, S, VM : PagedBottomSheetVM<A, S>>(
     @LayoutRes contentLayoutId: Int,
     viewModelClass: KClass<VM>
 ) : Fragment(contentLayoutId) {

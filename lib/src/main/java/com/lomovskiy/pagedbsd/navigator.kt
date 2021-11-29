@@ -39,8 +39,8 @@ open class PagedBsdNavigator(
         when (command) {
             Back -> handleBack()
             BackToRoot -> handleBackToRoot()
-            is Forward -> handleForwardTo(command.page)
-            is Replace -> handleReplaceOn(command.page)
+            is Forward -> handleForwardTo(command.route)
+            is Replace -> handleReplaceOn(command.route)
         }
     }
 
@@ -58,32 +58,32 @@ open class PagedBsdNavigator(
         }
     }
 
-    private fun handleForwardTo(page: Page) {
-        commitPage(page, true)
+    private fun handleForwardTo(route: Route) {
+        commitPage(route, true)
     }
 
-    private fun handleReplaceOn(page: Page) {
+    private fun handleReplaceOn(route: Route) {
         if (localStack.isNotEmpty()) {
             dialogFragment.childFragmentManager.popBackStack()
             localStack.removeLast()
-            commitPage(page, true)
+            commitPage(route, true)
         } else {
-            commitPage(page, false)
+            commitPage(route, false)
         }
     }
 
-    private fun commitPage(page: Page, addToBackStack: Boolean) {
+    private fun commitPage(route: Route, addToBackStack: Boolean) {
         val fragmentTransaction: FragmentTransaction = dialogFragment.childFragmentManager.beginTransaction()
         val fragmentFactory: FragmentFactory = dialogFragment.childFragmentManager.fragmentFactory
         val classLoader: ClassLoader = dialogFragment.requireContext().classLoader
         val currentFragment: Fragment? = dialogFragment.childFragmentManager.findFragmentById(containerResId)
-        val nextFragment: Fragment = fragmentFactory.instantiate(classLoader, page.classRef.name)
+        val nextFragment: Fragment = fragmentFactory.instantiate(classLoader, route.classRef.name)
         fragmentTransaction.setReorderingAllowed(true)
         setupFragmentTransaction(fragmentTransaction, currentFragment, nextFragment)
-        fragmentTransaction.replace(containerResId, nextFragment, page.key)
+        fragmentTransaction.replace(containerResId, nextFragment, route.key)
         if (addToBackStack) {
-            fragmentTransaction.addToBackStack(page.key)
-            localStack.add(page.key)
+            fragmentTransaction.addToBackStack(route.key)
+            localStack.add(route.key)
         }
         fragmentTransaction.commit()
     }

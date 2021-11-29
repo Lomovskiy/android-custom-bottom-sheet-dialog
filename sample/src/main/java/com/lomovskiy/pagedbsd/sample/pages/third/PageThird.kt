@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import com.lomovskiy.pagedbsd.sample.R
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBsd
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
-import com.lomovskiy.pagedbsd.PagedBsdPage
+import com.lomovskiy.pagedbsd.sample.UuidsBottomSheet
+import com.lomovskiy.pagedbsd.sample.UuidsPagedBottomSheetVM
+import com.lomovskiy.pagedbsd.PagedBottomSheetPage
 
-class PageThird : PagedBsdPage<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, UuidsPagedBsdVM>(
+class PageThird : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State, UuidsPagedBottomSheetVM>(
     R.layout.page_third,
-    UuidsPagedBsdVM::class
+    UuidsPagedBottomSheetVM::class
 ), View.OnClickListener {
 
     private lateinit var buttonStub: Button
@@ -22,14 +22,14 @@ class PageThird : PagedBsdPage<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, Uuid
     }
 
     override fun onClick(v: View) {
-        vm.handleAction(UuidsPagedBsdVM.Action.Close)
+        vm.handleAction(UuidsPagedBottomSheetVM.Action.Close)
     }
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBsdVM.Action.PressedButtonBackToSecond)
+        vm.handleAction(UuidsPagedBottomSheetVM.Action.PressedButtonBackToSecond)
     }
 
-    override fun renderState(state: UuidsPagedBsd.State) {
+    override fun renderState(state: UuidsBottomSheet.State) {
         buttonStub.text = state.selectedUuid
     }
 

@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lomovskiy.pagedbsd.sample.R
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBsd
-import com.lomovskiy.pagedbsd.sample.UuidsPagedBsdVM
-import com.lomovskiy.pagedbsd.PagedBsdPage
+import com.lomovskiy.pagedbsd.sample.UuidsBottomSheet
+import com.lomovskiy.pagedbsd.sample.UuidsPagedBottomSheetVM
+import com.lomovskiy.pagedbsd.PagedBottomSheetPage
 
-class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, UuidsPagedBsdVM>(
+class PageSecond : PagedBottomSheetPage<UuidsPagedBottomSheetVM.Action, UuidsBottomSheet.State, UuidsPagedBottomSheetVM>(
     R.layout.page_second,
-    UuidsPagedBsdVM::class
+    UuidsPagedBottomSheetVM::class
 ) {
 
     private lateinit var list: RecyclerView
@@ -23,7 +23,7 @@ class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, Uui
         super.onViewCreated(view, savedInstanceState)
         list = view.findViewById(R.id.list)
         listAdapter = PageSecondLA {
-            vm.handleAction(UuidsPagedBsdVM.Action.SelectedListItem(it))
+            vm.handleAction(UuidsPagedBottomSheetVM.Action.SelectedListItem(it))
         }
         val lm = LinearLayoutManager(requireContext())
         list.layoutManager = lm
@@ -32,10 +32,10 @@ class PageSecond : PagedBsdPage<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, Uui
     }
 
     override fun onBackPressed() {
-        vm.handleAction(UuidsPagedBsdVM.Action.PressedButtonBackToFirst)
+        vm.handleAction(UuidsPagedBottomSheetVM.Action.PressedButtonBackToFirst)
     }
 
-    override fun renderState(state: UuidsPagedBsd.State) {
+    override fun renderState(state: UuidsBottomSheet.State) {
         listAdapter?.submitList(state.uuids)
     }
 

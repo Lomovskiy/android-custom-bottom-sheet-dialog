@@ -10,7 +10,7 @@ class RootActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var buttonOpen: Button
     private lateinit var buttonClose: Button
 
-    private var uuidsPagedBsd: UuidsPagedBsd? = null
+    private var uuidsPagedBsd: UuidsBottomSheet? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ class RootActivity : AppCompatActivity(), View.OnClickListener {
         buttonClose = findViewById(R.id.button_close)
         buttonOpen.setOnClickListener(this)
         buttonClose.setOnClickListener(this)
-        uuidsPagedBsd = UuidsPagedBsd()
+        uuidsPagedBsd = UuidsBottomSheet()
     }
 
     override fun onClick(view: View) {
