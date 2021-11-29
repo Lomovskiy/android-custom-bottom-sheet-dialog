@@ -1,30 +1,22 @@
 package com.lomovskiy.pagedbsd.sample
 
 import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.lomovskiy.pagedbsd.Navigator
 import com.lomovskiy.pagedbsd.PagedBsd
 import com.lomovskiy.pagedbsd.PagedBsdNavigator
 
 class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, UuidsPagedBsdVM>(
+    UuidsPagedBsdVM::class,
     UuidsPagedBsdVM.Action.Start
-), ViewModelProvider.Factory {
-
-    override val vm: UuidsPagedBsdVM by viewModels(
-        factoryProducer = { this },
-        ownerProducer = { this }
-    )
+) {
 
     override val pageFactory: FragmentFactory = PageFactory()
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return UuidsPagedBsdVM(
-            PagedBsdNavigator(
-                R.id.container,
-                this
-            )
-        ) as T
+    override fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): UuidsPagedBsdVM {
+        val navigator: Navigator = PagedBsdNavigator(R.id.container, this)
+        val coordinator: Coordinator = UuidPagedBsdCoordinator(navigator)
+        return UuidsPagedBsdVM(coordinator)
     }
 
     data class State(

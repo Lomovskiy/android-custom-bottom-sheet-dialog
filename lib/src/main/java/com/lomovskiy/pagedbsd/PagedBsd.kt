@@ -7,15 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentFactory
+import androidx.fragment.app.createViewModelLazy
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlin.reflect.KClass
 
 abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
+    viewModelClass: KClass<VM>,
     private val initialAction: A
-) : BottomSheetDialogFragment() {
+) : BottomSheetDialogFragment(), ViewModelProvider.Factory {
 
-    abstract val vm: VM
     abstract val pageFactory: FragmentFactory
+
+    protected val vm: VM by createViewModelLazy(
+        viewModelClass,
+        { this.viewModelStore },
+        { this }
+    )
+
+    abstract fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         childFragmentManager.fragmentFactory = pageFactory
@@ -44,6 +56,10 @@ abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.handleAction(initialAction)
+    }
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return onCreateViewModel(modelClass) as T
     }
 
 }

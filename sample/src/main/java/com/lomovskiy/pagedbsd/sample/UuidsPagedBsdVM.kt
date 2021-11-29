@@ -4,7 +4,7 @@ import com.lomovskiy.pagedbsd.*
 import java.util.*
 
 class UuidsPagedBsdVM(
-    private val navigator: Navigator
+    private val coordinator: Coordinator
 ) : PagedBsdVM<UuidsPagedBsdVM.Action, UuidsPagedBsd.State>(
     UuidsPagedBsd.State.empty()
 ) {
@@ -12,31 +12,28 @@ class UuidsPagedBsdVM(
     override fun handleAction(action: Action) {
         when (action) {
             Action.Start -> {
-                navigator.executeCommand(Replace(Pages.First))
+                coordinator.start()
             }
             Action.Close -> {
-                navigator.executeCommands(arrayOf(
-                    BackToRoot,
-                    Back
-                ))
+                coordinator.finish()
             }
             is Action.SelectedListItem -> {
                 state.value = state.value!!.copy(selectedUuid = action.item)
-                navigator.executeCommand(Forward(Pages.Third))
+                coordinator.onUuidSelected()
             }
             is Action.PressedButtonNumber -> {
                 val uuids: List<CharSequence> = List(action.number) {
                     UUID.randomUUID().toString()
                 }
                 state.value = state.value!!.copy(uuids = uuids)
-                navigator.executeCommand(Forward(Pages.Second))
+                coordinator.onNumberSelected()
             }
             Action.PressedButtonBackToFirst -> {
                 state.value = state.value!!.copy(uuids = null)
-                navigator.executeCommand(Back)
+                coordinator.onBackToSelectNumber()
             }
             Action.PressedButtonBackToSecond -> {
-                navigator.executeCommand(Back)
+                coordinator.onBackToSelectUuid()
             }
         }
     }
