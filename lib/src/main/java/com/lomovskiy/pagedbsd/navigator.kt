@@ -1,9 +1,6 @@
 package com.lomovskiy.pagedbsd
 
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.*
 
 interface Navigator {
 
@@ -32,11 +29,11 @@ open class PagedBsdNavigator(
         commands.forEach(::executeCommandInternal)
     }
 
-//    protected open fun setupFragmentTransaction(
-//        fragmentTransaction: FragmentTransaction,
-//        currentFragment: Fragment?,
-//        nextFragment: Fragment
-//    ) {}
+    protected open fun setupFragmentTransaction(
+        fragmentTransaction: FragmentTransaction,
+        currentFragment: Fragment?,
+        nextFragment: Fragment
+    ) {}
 
     private fun executeCommandInternal(command: NavigationCommand) {
         when (command) {
@@ -76,17 +73,19 @@ open class PagedBsdNavigator(
     }
 
     private fun commitPage(page: Page, addToBackStack: Boolean) {
-        val transaction: FragmentTransaction = dialogFragment.childFragmentManager.beginTransaction()
-//        val currentFragment: Fragment? = childFragmentManager.findFragmentById(containerResId)
-        val nextFragment: Class<out Fragment> = page.classRef
-        transaction.setReorderingAllowed(true)
-//        setupFragmentTransaction(transaction, currentFragment, nextFragment.newInstance())
-        transaction.replace(containerResId, nextFragment, null, page.key)
+        val fragmentTransaction: FragmentTransaction = dialogFragment.childFragmentManager.beginTransaction()
+        val fragmentFactory: FragmentFactory = dialogFragment.childFragmentManager.fragmentFactory
+        val classLoader: ClassLoader = dialogFragment.requireContext().classLoader
+        val currentFragment: Fragment? = dialogFragment.childFragmentManager.findFragmentById(containerResId)
+        val nextFragment: Fragment = fragmentFactory.instantiate(classLoader, page.classRef.name)
+        fragmentTransaction.setReorderingAllowed(true)
+        setupFragmentTransaction(fragmentTransaction, currentFragment, nextFragment)
+        fragmentTransaction.replace(containerResId, nextFragment, page.key)
         if (addToBackStack) {
-            transaction.addToBackStack(page.key)
+            fragmentTransaction.addToBackStack(page.key)
             localStack.add(page.key)
         }
-        transaction.commit()
+        fragmentTransaction.commit()
     }
 
     private fun copyStack() {

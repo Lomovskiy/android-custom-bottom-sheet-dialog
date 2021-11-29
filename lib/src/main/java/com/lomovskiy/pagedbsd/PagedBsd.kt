@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.createViewModelLazy
+import androidx.fragment.app.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -30,6 +28,12 @@ abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
     protected lateinit var navigator: Navigator
 
     abstract fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): VM
+
+    abstract fun setupFragmentTransaction(
+        fragmentTransaction: FragmentTransaction,
+        currentFragment: Fragment?,
+        nextFragment: Fragment
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         childFragmentManager.fragmentFactory = pageFactory
@@ -57,7 +61,17 @@ abstract class PagedBsd<A, S, VM : PagedBsdVM<A, S>>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navigator = PagedBsdNavigator(R.id.container, this)
+        navigator = object : PagedBsdNavigator(R.id.container, this) {
+
+            override fun setupFragmentTransaction(
+                fragmentTransaction: FragmentTransaction,
+                currentFragment: Fragment?,
+                nextFragment: Fragment
+            ) {
+                this@PagedBsd.setupFragmentTransaction(fragmentTransaction, currentFragment, nextFragment)
+            }
+
+        }
         vm.handleAction(initialAction)
     }
 

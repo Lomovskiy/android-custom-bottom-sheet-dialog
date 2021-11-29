@@ -1,6 +1,9 @@
 package com.lomovskiy.pagedbsd.sample
 
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import com.lomovskiy.pagedbsd.Navigator
 import com.lomovskiy.pagedbsd.PagedBsd
@@ -16,6 +19,18 @@ class UuidsPagedBsd : PagedBsd<UuidsPagedBsdVM.Action, UuidsPagedBsd.State, Uuid
     override fun <T : ViewModel?> onCreateViewModel(modelClass: Class<T>): UuidsPagedBsdVM {
         val coordinator: Coordinator = UuidPagedBsdCoordinator(navigator)
         return UuidsPagedBsdVM(coordinator)
+    }
+
+    override fun setupFragmentTransaction(
+        fragmentTransaction: FragmentTransaction,
+        currentFragment: Fragment?,
+        nextFragment: Fragment
+    ) {
+        Toast.makeText(
+            requireContext(),
+            "ft: $fragmentTransaction\ncf: $currentFragment\nnf: $nextFragment",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     data class State(
