@@ -34,10 +34,10 @@ abstract class PagedBottomSheetPage<A, S, VM : PagedBottomSheetVM<A, S>>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                vm.getStateStream().collect(::renderState)
-            }
+        viewLifecycleOwner.lifecycleScope.launch {
+            vm.getStateStream()
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
+                .collect(::renderState)
         }
     }
 
